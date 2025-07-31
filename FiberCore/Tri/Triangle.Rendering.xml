@@ -1,0 +1,737 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Triangle.Rendering</name>
+    </assembly>
+    <members>
+        <member name="P:TriangleNet.Rendering.Buffer.BufferBase`1.Data">
+            <inheritdoc/>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.BufferBase`1.Count">
+            <inheritdoc/>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.BufferBase`1.Size">
+            <inheritdoc/>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.BufferBase`1.Target">
+            <inheritdoc/>
+        </member>
+        <member name="M:TriangleNet.Rendering.Buffer.ColorBuffer.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.Buffer.ColorBuffer"/> class.
+            </summary>
+            <param name="capacity">The buffer capacity.</param>
+            <param name="size">The size of one element in the buffer (i.e. 2 for 2D points)</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Buffer.ColorBuffer.#ctor(System.Drawing.Color[],System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.Buffer.ColorBuffer"/> class.
+            </summary>
+            <param name="data">The buffer data.</param>
+            <param name="size">The size of one element in the buffer (i.e. 2 for 2D points)</param>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.ColorBuffer.Size">
+            <inheritdoc/>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.ColorBuffer.Target">
+            <inheritdoc/>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.IBuffer`1.Data">
+            <summary>
+            Gets the contents of the buffer.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.IBuffer`1.Count">
+            <summary>
+            Gets the size of the buffer.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.IBuffer`1.Size">
+            <summary>
+            Gets the size of one element in the buffer (i.e. 2 for 2D points
+            or 3 for triangles).
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.IBuffer`1.Target">
+            <summary>
+            Gets the buffer target (vertices or indices).
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.Buffer.IndexBuffer.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.Buffer.IndexBuffer"/> class.
+            </summary>
+            <param name="capacity">The buffer capacity.</param>
+            <param name="size">The size of one element in the buffer (i.e. 2 for 2D points)</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Buffer.IndexBuffer.#ctor(System.UInt32[],System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.Buffer.IndexBuffer"/> class.
+            </summary>
+            <param name="data">The buffer data.</param>
+            <param name="size">The size of one element in the buffer (i.e. 2 for 2D points)</param>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.IndexBuffer.Size">
+            <inheritdoc/>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.IndexBuffer.Target">
+            <inheritdoc/>
+        </member>
+        <member name="M:TriangleNet.Rendering.Buffer.VertexBuffer.Create(System.Collections.Generic.ICollection{TriangleNet.Geometry.Point})">
+            <summary>
+            Create a vertex buffer from given point collection.
+            </summary>
+            <param name="points">The points to render.</param>
+            <returns>Returns the vertex buffer.</returns>
+        </member>
+        <member name="M:TriangleNet.Rendering.Buffer.VertexBuffer.Create(System.Collections.Generic.ICollection{TriangleNet.Geometry.Point},TriangleNet.Geometry.Rectangle)">
+            <summary>
+            Create a normalized vertex buffer from given point collection.
+            </summary>
+            <param name="points">The points to render.</param>
+            <param name="bounds">The bounding box used for normalization.</param>
+            <returns>Returns a buffer of normalized coordinates.</returns>
+        </member>
+        <member name="M:TriangleNet.Rendering.Buffer.VertexBuffer.Create(System.Collections.Generic.ICollection{TriangleNet.Geometry.Vertex},System.Int32)">
+            <summary>
+            Create a vertex buffer from given point collection.
+            </summary>
+            <param name="points">The points to render.</param>
+            <param name="size">The size of one element in the buffer (i.e. 2 for 2D points)</param>
+            <returns>Returns the vertex buffer.</returns>
+        </member>
+        <member name="M:TriangleNet.Rendering.Buffer.VertexBuffer.Create(System.Collections.Generic.ICollection{TriangleNet.Geometry.Vertex},TriangleNet.Geometry.Rectangle,System.Int32)">
+            <summary>
+            Create a normalized vertex buffer from given vertex collection.
+            </summary>
+            <param name="points">The vertices to render.</param>
+            <param name="bounds">The bounding box used for normalization.</param>
+            <param name="size">The size of one element in the buffer (i.e. 2 for 2D points)</param>
+            <returns>Returns a buffer of normalized coordinates.</returns>
+        </member>
+        <member name="M:TriangleNet.Rendering.Buffer.VertexBuffer.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.Buffer.VertexBuffer"/> class.
+            </summary>
+            <param name="capacity">The buffer capacity.</param>
+            <param name="size">The size of one element in the buffer (i.e. 2 for 2D points)</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Buffer.VertexBuffer.#ctor(System.Single[],System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.Buffer.VertexBuffer"/> class.
+            </summary>
+            <param name="data">The buffer data.</param>
+            <param name="size">The size of one element in the buffer (i.e. 2 for 2D points)</param>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.VertexBuffer.Size">
+            <inheritdoc/>
+        </member>
+        <member name="P:TriangleNet.Rendering.Buffer.VertexBuffer.Target">
+            <inheritdoc/>
+        </member>
+        <member name="P:TriangleNet.Rendering.ColorManager.Background">
+            <summary>
+            Gets or sets the background color.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.ColorManager.Point">
+            <summary>
+            Gets or sets the brush used for points.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.ColorManager.SteinerPoint">
+            <summary>
+            Gets or sets the brush used for steiner points.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.ColorManager.Line">
+            <summary>
+            Gets or sets the pen used for mesh edges.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.ColorManager.Segment">
+            <summary>
+            Gets or sets the pen used for mesh segments.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.ColorManager.VoronoiLine">
+            <summary>
+            Gets or sets the pen used for Voronoi edges.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.ColorManager.ColorDictionary">
+            <summary>
+            Gets or sets a dictionary which maps region ids (or partition indices) to a color.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.ColorManager.ColorMap">
+            <summary>
+            Gets or sets a color map used for function plotting.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.ColorManager.Default">
+            <summary>
+            Creates an instance of the <see cref="T:TriangleNet.Rendering.ColorManager"/> class with default (dark) color scheme.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.IRenderContext.ColorManager">
+            <summary>
+            Gets the color manager.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.IRenderContext.RenderLayers">
+            <summary>
+            Gets the list of <see cref="T:TriangleNet.Rendering.IRenderLayer"/>s.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.IRenderContext.Zoom">
+            <summary>
+            Gets the <see cref="T:TriangleNet.Rendering.Projection"/>.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.IRenderContext.Mesh">
+            <summary>
+            Gets the <see cref="T:TriangleNet.Meshing.IMesh"/>.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.IRenderContext.HasData">
+            <summary>
+            Gets a value indicating whether the context has data to render. 
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.IRenderContext.Add(TriangleNet.Geometry.IPolygon)">
+            <summary>
+            Add polygon data.
+            </summary>
+            <param name="data">The polygon data to render.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.IRenderContext.Add(TriangleNet.Meshing.IMesh,System.Boolean)">
+            <summary>
+            Add mesh data.
+            </summary>
+            <param name="data">The mesh data to render.</param>
+            <param name="reset">If true, point buffer will be cleared. Otherwise, the information
+            may be used to render new Steiner points in a different color.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.IRenderContext.Add(System.Collections.Generic.ICollection{TriangleNet.Geometry.Point},System.Collections.Generic.IEnumerable{TriangleNet.Geometry.IEdge},System.Boolean)">
+            <summary>
+            Add edge data (used for Voronoi).
+            </summary>
+            <param name="points">The points to render.</param>
+            <param name="edges">The edges to render.</param>
+            <param name="reset">(unused)</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.IRenderContext.Add(System.Single[])">
+            <summary>
+            Add mesh function values <c>z=f(x,y)</c>.
+            </summary>
+            <param name="values">Functions values corresponding to each vertex.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.IRenderContext.Add(System.UInt32[])">
+            <summary>
+            Add mesh partitioning data.
+            </summary>
+            <param name="partition">Partition index corresponding to each triangle.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.IRenderContext.Enable(System.Int32,System.Boolean)">
+            <summary>
+            Enable or disable a layer for rendering.
+            </summary>
+            <param name="layer">The layer index.</param>
+            <param name="enabled">If true, enable layer, otherwise disable.</param>
+            <remarks>
+             0 = mesh (filled)
+             1 = mesh (wireframe)
+             2 = polygon
+             3 = points
+             4 = voronoi overlay
+             5 = vector field
+             6 = contour lines
+            </remarks>
+        </member>
+        <member name="M:TriangleNet.Rendering.IRenderContext.Clear">
+            <summary>
+            Clear data from all layers.
+            </summary>
+        </member>
+        <member name="T:TriangleNet.Rendering.IRenderControl">
+            <summary>
+            TODO: Update summary.
+            </summary>
+        </member>
+        <member name="T:TriangleNet.Rendering.IRenderLayer">
+            <summary>
+            Interface for managing the data of a render layer.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.IRenderLayer.Count">
+            <summary>
+            Gets the number of points in the point buffer.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.IRenderLayer.Points">
+            <summary>
+            Gets the points buffer.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.IRenderLayer.Indices">
+            <summary>
+            Gets the indices buffer.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.IRenderLayer.IsEnabled">
+            <summary>
+            Gets or sets a value indicating whether the layer is enabled.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.IRenderLayer.IsEmpty">
+            <summary>
+            Indicates whether this layer contains data to render.
+            </summary>
+            <returns>Returns true, if the points buffer contains data.</returns>
+        </member>
+        <member name="M:TriangleNet.Rendering.IRenderLayer.Reset(System.Boolean)">
+            <summary>
+            Resets this layer to an empty state.
+            </summary>
+            <param name="clear">If true, point buffer will be cleared.</param>
+        </member>
+        <member name="P:TriangleNet.Rendering.IRenderLayer.Partition">
+            <summary>
+            Gets the mesh partition.
+            </summary>
+            <remarks>
+            Triangle <c>i</c> given by indices <c>[3 * i, 3 * i + 1, 3 * i + 2]</c>
+            belongs to <c>Partition[i]</c>.
+            </remarks>
+        </member>
+        <member name="P:TriangleNet.Rendering.IRenderLayer.Colors">
+            <summary>
+            Gets the color attached to a point in the points buffer.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.IRenderLayer.AttachLayerData(System.Single[],TriangleNet.Rendering.Util.ColorMap)">
+            <summary>
+            Attach function values <c>z=f(x,y)</c> for all points <c>(x,y)</c> in the point buffer.
+            </summary>
+            <param name="values">The function values.</param>
+            <param name="colormap">The color map.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.IRenderLayer.AttachLayerData(System.UInt32[])">
+            <summary>
+            Attach partitioning data to each triangle in the index buffer.
+            </summary>
+            <param name="partition">The mesh partition.</param>
+        </member>
+        <member name="T:TriangleNet.Rendering.Projection">
+            <summary>
+            Manages a world to screen transformation (2D orthographic projection).
+            </summary>
+            <remarks>
+            <para>
+            The projection implementation is actually not world-to-screen, but NDC-to-screen
+            (Normalized-Device-Coordinates). NDC here is - in contrast for example to OpenGL, the
+            transformation of world coordinates to a unit rectangle with origin (0,0) and a max
+            side length 1 (the width/height ratio is preserved). It's a simple translate-scale
+            transform, which is automatically applied in <c>VertexBuffer.Create(points, bounds)</c>.
+            </para>
+            <para>
+            Since the upper-left corner of the display is usually the screen coordinate origin
+            (0,0), the projection will automatically invert the y-axis.
+            </para>
+            </remarks>
+        </member>
+        <member name="P:TriangleNet.Rendering.Projection.Viewport">
+            <summary>
+            Gets or sets the current viewport (normalized coordinates).
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.Projection.Level">
+            <summary>
+            Gets the zoom level.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.Projection.#ctor(System.Drawing.Rectangle)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.Projection"/> class.
+            </summary>
+            <param name="screen">The current screen (viewport) dimensions.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Projection.Initialize(TriangleNet.Geometry.Rectangle)">
+            <summary>
+            Initialize the projection.
+            </summary>
+            <param name="world">The world that should be transformed to screen coordinates.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Projection.Resize(System.Drawing.Rectangle)">
+            <summary>
+            Handle resize of the screen (viewport).
+            </summary>
+            <param name="newScreen">The new screen (viewport) dimensions.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Projection.Zoom(System.Int32,System.Single,System.Single)">
+            <summary>
+            Zoom in or out of the viewport.
+            </summary>
+            <param name="amount">Zoom amount.</param>
+            <param name="focusX">Relative x point position (in [0..1] range).</param>
+            <param name="focusY">Relative y point position (in [0..1] range).</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Projection.Reset">
+            <summary>
+            Reset the zoom to initial state.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.Projection.NdcToScreen(System.Drawing.PointF@)">
+            <summary>
+            Project a normalized device coordinate to screen coordinates.
+            </summary>
+            <param name="pt">Input normalized device coordinate, output screen coordinate.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Projection.ScreenToWorld(System.Drawing.PointF,System.Double@,System.Double@)">
+            <summary>
+            Project a screen coordinate to world coordinates.
+            </summary>
+            <param name="pt">Normalized position on screen (both coordinates in [0..1] range).</param>
+            <param name="x">The world x-coordinate.</param>
+            <param name="y">The world y-coordinate.</param>
+        </member>
+        <member name="T:TriangleNet.Rendering.RenderContext">
+            <summary>
+            The RenderContext class brings all the rendering parts together.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderContext.#ctor(TriangleNet.Rendering.Projection,TriangleNet.Rendering.ColorManager)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.RenderContext"/> class.
+            </summary>
+            <param name="zoom">The <see cref="T:TriangleNet.Rendering.Projection"/> used for panning and zooming.</param>
+            <param name="colorManager">The <see cref="P:TriangleNet.Rendering.RenderContext.ColorManager"/>.</param>
+        </member>
+        <member name="P:TriangleNet.Rendering.RenderContext.ColorManager">
+            <inheritdoc />
+        </member>
+        <member name="P:TriangleNet.Rendering.RenderContext.RenderLayers">
+            <inheritdoc />
+        </member>
+        <member name="P:TriangleNet.Rendering.RenderContext.Zoom">
+            <inheritdoc />
+        </member>
+        <member name="P:TriangleNet.Rendering.RenderContext.Mesh">
+            <inheritdoc />
+        </member>
+        <member name="P:TriangleNet.Rendering.RenderContext.HasData">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderContext.Add(TriangleNet.Geometry.IPolygon)">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderContext.Add(TriangleNet.Meshing.IMesh,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderContext.Add(System.Collections.Generic.ICollection{TriangleNet.Geometry.Point},System.Collections.Generic.IEnumerable{TriangleNet.Geometry.IEdge},System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderContext.Add(System.Single[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderContext.Add(System.UInt32[])">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderContext.Enable(System.Int32,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderContext.Clear">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderLayer.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.RenderLayer"/> class.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.RenderLayer.Count">
+            <inheritdoc />
+        </member>
+        <member name="P:TriangleNet.Rendering.RenderLayer.Points">
+            <inheritdoc />
+        </member>
+        <member name="P:TriangleNet.Rendering.RenderLayer.Indices">
+            <inheritdoc />
+        </member>
+        <member name="P:TriangleNet.Rendering.RenderLayer.Partition">
+            <inheritdoc />
+        </member>
+        <member name="P:TriangleNet.Rendering.RenderLayer.Colors">
+            <inheritdoc />
+        </member>
+        <member name="P:TriangleNet.Rendering.RenderLayer.IsEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderLayer.IsEmpty">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderLayer.Reset(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderLayer.SetPoints(TriangleNet.Rendering.Buffer.IBuffer{System.Single},System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderLayer.SetIndices(TriangleNet.Rendering.Buffer.IBuffer{System.UInt32})">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderLayer.AttachLayerData(System.Single[],TriangleNet.Rendering.Util.ColorMap)">
+            <inheritdoc />
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderLayer.AttachLayerData(System.UInt32[])">
+            <inheritdoc />
+        </member>
+        <member name="T:TriangleNet.Rendering.RenderManager">
+            <summary>
+            A helper class to handle <see cref="T:TriangleNet.Rendering.IRenderControl"/> and <see cref="T:TriangleNet.Rendering.IRenderContext"/>.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderManager.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.RenderManager"/> class.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderManager.#ctor(TriangleNet.Rendering.IRenderControl,TriangleNet.Rendering.IRenderer)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.RenderManager"/> class.
+            </summary>
+            <param name="control">The <see cref="T:TriangleNet.Rendering.IRenderControl"/> instance.</param>
+            <param name="renderer">The <see cref="T:TriangleNet.Rendering.IRenderer"/> instance.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderManager.Initialize(TriangleNet.Rendering.IRenderControl,TriangleNet.Rendering.IRenderer)">
+            <summary>
+            Initializes the <see cref="T:TriangleNet.Rendering.RenderManager"/> instance.
+            </summary>
+            <param name="control">The <see cref="T:TriangleNet.Rendering.IRenderControl"/> instance.</param>
+            <param name="renderer">The <see cref="T:TriangleNet.Rendering.IRenderer"/> instance.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderManager.TryCreateControl(System.String,System.Collections.Generic.IEnumerable{System.String},TriangleNet.Rendering.IRenderControl@)">
+            <summary>
+            Try to create a <see cref="T:TriangleNet.Rendering.IRenderControl"/> form the given assembly name.
+            </summary>
+            <param name="assemblyName">The name of the assembly that contains the control.</param>
+            <param name="dependencies">A list of (local) assembly dependencies.</param>
+            <param name="control">The <see cref="T:TriangleNet.Rendering.IRenderControl"/> (output).</param>
+            <returns>True if control was created successfully.</returns>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderManager.Resize">
+            <summary>
+            Update render control to reflect size changes of the window.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderManager.Clear">
+            <summary>
+            Clear all data.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderManager.Enable(System.Int32,System.Boolean)">
+            <summary>
+            Enable or disable the given layer.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderManager.Set(TriangleNet.Geometry.IPolygon,System.Boolean)">
+            <summary>
+            Add polygon data.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderManager.Set(TriangleNet.Meshing.IMesh,System.Boolean,System.Boolean)">
+            <summary>
+            Add mesh data.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderManager.Set(System.Collections.Generic.ICollection{TriangleNet.Geometry.Point},System.Collections.Generic.IEnumerable{TriangleNet.Geometry.IEdge},System.Boolean,System.Boolean)">
+            <summary>
+            Add data for Voronoi layer.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderManager.Update(System.Single[])">
+            <summary>
+            Update data for function values.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.RenderManager.Update(System.UInt32[])">
+            <summary>
+            Update data for mesh partitioning.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.Text.EpsDocument.Name">
+            <summary>
+            Gets or sets the document name.
+            </summary>
+        </member>
+        <member name="P:TriangleNet.Rendering.Text.EpsDocument.DefaultPointSize">
+            <summary>
+            Gets or sets the default point size (default = 1).
+            </summary>
+        </member>
+        <member name="T:TriangleNet.Rendering.Text.EpsImage">
+            <summary>
+            Writes a mesh to an EPS file.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.Text.EpsImage.Export(TriangleNet.Mesh,System.String,System.Int32)">
+            <summary>
+            Export the mesh to EPS format.
+            </summary>
+            <param name="mesh">The current mesh.</param>
+            <param name="filename">The EPS filename.</param>
+            <param name="width">The desired width of the image (currently ignored).</param>
+        </member>
+        <member name="T:TriangleNet.Rendering.Text.FormattingStreamWriter">
+            <summary>
+            A <see cref="T:System.IO.StreamWriter"/> class allowing to specify the <see cref="T:System.IFormatProvider"/>.
+            </summary>
+            <remarks>
+            From http://stackoverflow.com/questions/12011789/streamwriter-and-iformatprovider
+            </remarks>
+        </member>
+        <member name="M:TriangleNet.Rendering.Text.FormattingStreamWriter.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the StreamWriter class for the specified file
+            by using the default encoding and buffer size.
+            </summary>
+            <param name="path">The complete file path to write to.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Text.FormattingStreamWriter.#ctor(System.IO.Stream)">
+            <summary>
+            Initializes a new instance of the StreamWriter class for the specified stream
+            by using UTF-8 encoding and the default buffer size.
+            </summary>
+            <param name="stream">The stream to write to.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Text.FormattingStreamWriter.#ctor(System.String,System.IFormatProvider)">
+            <summary>
+            Initializes a new instance of the StreamWriter class for the specified file
+            by using the default encoding and buffer size.
+            </summary>
+            <param name="path">The complete file path to write to.</param>
+            <param name="formatProvider">The format provider.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Text.FormattingStreamWriter.#ctor(System.IO.Stream,System.IFormatProvider)">
+            <summary>
+            Initializes a new instance of the StreamWriter class for the specified stream
+            by using UTF-8 encoding and the default buffer size.
+            </summary>
+            <param name="stream">The stream to write to.</param>
+            <param name="formatProvider">The format provider.</param>
+        </member>
+        <member name="P:TriangleNet.Rendering.Text.FormattingStreamWriter.FormatProvider">
+            <summary>
+            Gets an object that controls formatting.
+            </summary>
+        </member>
+        <member name="T:TriangleNet.Rendering.Text.PageSize">
+            <summary>
+            Page size in millimeters.
+            </summary>
+        </member>
+        <member name="T:TriangleNet.Rendering.Text.SvgImage">
+            <summary>
+            Writes a mesh to an SVG file.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.Text.SvgImage.Save(TriangleNet.Meshing.IMesh,System.String,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Exports a mesh to SVG format.
+            </summary>
+            <param name="mesh">The mesh.</param>
+            <param name="file">The SVG filename.</param>
+            <param name="width">The desired width (pixel) of the image.</param>
+            <param name="regions">Enable rendering of regions.</param>
+            <param name="points">Enable rendering of points.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Text.SvgImage.Export(TriangleNet.Meshing.IMesh,System.String,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Export a mesh to SVG format.
+            </summary>
+            <param name="mesh">The current mesh.</param>
+            <param name="filename">The SVG filename.</param>
+            <param name="width">The desired width of the image.</param>
+            <param name="regions">Enable rendering of regions.</param>
+            <param name="points">Enable rendering of points.</param>
+        </member>
+        <member name="T:TriangleNet.Rendering.Util.ColorMap">
+            <summary>
+            A simple color map implementation.
+            </summary>
+        </member>
+        <member name="M:TriangleNet.Rendering.Util.ColorMap.Jet(System.Int32)">
+            <summary>
+            Create a jet (or rainbow) color map.
+            </summary>
+            <param name="size">The size of the color map.</param>
+            <returns>The jet color map.</returns>
+        </member>
+        <member name="M:TriangleNet.Rendering.Util.ColorMap.Hot(System.Int32)">
+            <summary>
+            Create a hot color map.
+            </summary>
+            <param name="size">The size of the color map.</param>
+            <returns>The jet color map.</returns>
+        </member>
+        <member name="M:TriangleNet.Rendering.Util.ColorMap.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.Util.ColorMap"/> class.
+            </summary>
+            <param name="size">The size of the color map.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Util.ColorMap.#ctor(System.Drawing.Color[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:TriangleNet.Rendering.Util.ColorMap"/> class.
+            </summary>
+            <param name="colors">The colors of the color map.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Util.ColorMap.GetColors(System.Single[],System.Drawing.Color[])">
+            <summary>
+            For each input value assign the corresponding color.
+            </summary>
+            <param name="values">The input values (associated to vertex).</param>
+            <param name="colors">The color array target containing the <see cref="T:System.Drawing.Color"/>s on output.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Util.ColorMap.GetColors(System.Single[],System.Single,System.Single,System.Drawing.Color[])">
+            <summary>
+            For each input value assign the corresponding color.
+            </summary>
+            <param name="values">The input values (associated to vertex).</param>
+            <param name="min">The minimum of the input values.</param>
+            <param name="max">The maximum of the input values.</param>
+            <param name="colors">The color array target containing the <see cref="T:System.Drawing.Color"/>s on output.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Util.ColorMap.GetColors(System.Single[],System.Single[])">
+            <summary>
+            For each input value assign the corresponding color.
+            </summary>
+            <param name="values">The input values (associated to vertex).</param>
+            <param name="rgba">The color array target containing RGBA float values on output.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Util.ColorMap.GetColors(System.Single[],System.Single,System.Single,System.Single[])">
+            <summary>
+            For each input value assign the corresponding color.
+            </summary>
+            <param name="values">The input values (associated to vertex).</param>
+            <param name="min">The minimum of the input values.</param>
+            <param name="max">The maximum of the input values.</param>
+            <param name="rgba">The color array target containing RGBA float values on output.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Util.ColorMap.GetColors(System.Double[],System.Single[])">
+            <summary>
+            For each input value assign the corresponding color.
+            </summary>
+            <param name="values">The input values (associated to vertex).</param>
+            <param name="rgba">The color array target containing RGBA float values on output.</param>
+        </member>
+        <member name="M:TriangleNet.Rendering.Util.ColorMap.GetColors(System.Double[],System.Double,System.Double,System.Single[])">
+            <summary>
+            For each input value assign the corresponding color.
+            </summary>
+            <param name="values">The input values (associated to vertex).</param>
+            <param name="min">The minimum of the input values.</param>
+            <param name="max">The maximum of the input values.</param>
+            <param name="rgba">The color array target containing RGBA float values on output.</param>
+        </member>
+    </members>
+</doc>
