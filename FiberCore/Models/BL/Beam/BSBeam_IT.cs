@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using DescriptionAttribute = System.ComponentModel.DescriptionAttribute;
 
 namespace BSFiberCore.Models.BL.Beam
 {

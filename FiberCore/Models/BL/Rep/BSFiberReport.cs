@@ -1,18 +1,12 @@
-﻿using System;
-using System.Reflection;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using BSFiberCore.Models.BL.Beam;
 using BSFiberCore.Models.BL.Uom;
 using BSFiberCore.Models.BL.Mat;
 using BSFiberCore.Models.BL.Lib;
-
+using DescriptionAttribute = System.ComponentModel.DescriptionAttribute;
 
 namespace BSFiberCore.Models.BL.Rep
 {

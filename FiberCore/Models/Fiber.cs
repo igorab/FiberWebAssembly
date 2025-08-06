@@ -11,6 +11,9 @@ using TriangleNet.Geometry;
 
 namespace BSFiberCore.Models
 {
+    /// <summary>
+    /// Represents a fiber-reinforced concrete beam for structural calculations.
+    /// </summary>
     public class Fiber
     {
         #region userparams
@@ -109,8 +112,9 @@ namespace BSFiberCore.Models
         }
 
         /// <summary>
-        ///  Расчеты по методу предельных усилий
+        /// Runs the calculation based on the selected calculation type.
         /// </summary>
+        /// <returns>HTML content of the calculation report.</returns>
         public string RunCalc()
         {
             if (CalcType == 0)

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using DescriptionAttribute = System.ComponentModel.DescriptionAttribute;
 
 namespace BSFiberCore.Models.BL.Beam
 {
