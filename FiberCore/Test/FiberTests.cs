@@ -1,4 +1,4 @@
-﻿using BSFiberCore.Models;
+﻿using FiberCore.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FiberCore.Test;
@@ -10,7 +10,7 @@ public class FiberTests
     public void TestRunCalc_StaticEquilibrium()
     {
         // Arrange
-        var fiber = new Fiber
+        var fiber = new FiberCalculator
         {
             CalcType = 0,
             My = 1000,

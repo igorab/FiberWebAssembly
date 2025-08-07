@@ -1,4 +1,8 @@
-﻿@page "/Calculate"
+﻿@page "/Calculator"
+@using FiberCore.Services
+@inject FiberCalculator fiber_calculator
+@inject NavigationManager navigation
+
 <head>
     <style>
         body {
@@ -307,7 +311,18 @@
     </div>
 
     <br>
-    <button type="submit">Вычислить </button>
+    <button type="submit" @onclick = "Calculate" >Вычислить </button>
 </form>
 
+@code {
 
+    private void Calculate()
+    {
+        fiber_calculator.CalcType = 0;
+
+        var resHtml = fiber_calculator.RunCalc();
+
+        navigation.NavigateTo($"/CalculationResult?HtmlResult={Uri.EscapeDataString(resHtml)}&CalcType ={0}");
+    }
+
+}

@@ -1,0 +1,38 @@
+﻿@page "/CalculationResult"
+@inject NavigationManager Navigation
+
+<h3>Результаты расчета</h3>
+
+@if (!string.IsNullOrEmpty(HtmlResult))
+{
+    <p>Расчет: <div>@HtmlResult</div> </p>    
+}
+else
+{
+    <p>Нет доступных данных для отображения.</p>
+}
+
+<button @onclick="GoBack">Назад</button>
+
+@code {
+    [Parameter]
+    public string? HtmlResult { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        Uri? uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+
+        var q = uri.Query;
+
+        var parameters = System.Web.HttpUtility.ParseQueryString(q);        
+
+        HtmlResult = parameters["HtmlResult"];
+    }
+
+    
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/Calculator");
+    }
+}

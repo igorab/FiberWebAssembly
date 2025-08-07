@@ -8,6 +8,7 @@ using BSFiberCore.Models.BL.Rep;
 using BSFiberCore.Models.BL.Sec;
 using BSFiberCore.Models.BL.Tri;
 using BSFiberCore.Models.BL.Uom;
+using FiberCore.Services;
 using System.Data;
 using System.Drawing;
 
@@ -25,7 +26,7 @@ namespace BSFiberCore.Models.BL
         public bool UseReinforcement { get; set; } = false;
         public BeamSection BeamSection { get; set; }
         public BSMatFiber MatFiber { get; set; }
-        public Fiber Fiber { get; internal set; }
+        public FiberCalculator Fiber { get; internal set; }
         public Rebar? Rebar { get; internal set; }
         public List<string> m_Message { get; private set; }
         public Dictionary<string, double> m_CalcResults2Group { get; private set; }
