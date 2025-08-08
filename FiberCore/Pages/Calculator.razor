@@ -1,6 +1,7 @@
 ﻿@page "/Calculator"
 @using FiberCore.Services
 @inject FiberCalculator fiber_calculator
+@inject FibercalcState calcState
 @inject NavigationManager navigation
 
 <head>
@@ -320,9 +321,12 @@
     {
         fiber_calculator.CalcType = 0;
 
-        var resHtml = fiber_calculator.RunCalc();
+        calcState.HtmlResult = fiber_calculator.RunCalc();
 
-        navigation.NavigateTo($"/CalculationResult?HtmlResult={Uri.EscapeDataString(resHtml)}&CalcType ={0}");
+        navigation.NavigateTo($"/CalculationResult?SectionType={0}&CalcType={0}");
+
+        // передача параметров через через URL
+       // navigation.NavigateTo($"/CalculationResult?HtmlResult={Uri.EscapeDataString(resHtml)}&CalcType ={0}"); 
     }
 
 }

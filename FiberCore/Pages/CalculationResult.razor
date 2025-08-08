@@ -1,5 +1,7 @@
 ﻿@page "/CalculationResult"
+@using FiberCore.Services
 @inject NavigationManager Navigation
+@inject FibercalcState calcState
 
 <h3>Результаты расчета</h3>
 
@@ -21,13 +23,13 @@ else
 
     protected override void OnInitialized()
     {
+        // передача параметров через URL
         Uri? uri = Navigation.ToAbsoluteUri(Navigation.Uri);
-
         var q = uri.Query;
-
         var parameters = System.Web.HttpUtility.ParseQueryString(q);        
 
-        HtmlResult = parameters["HtmlResult"];
+        //передача через состояние приложения(Application State)
+        HtmlResult = calcState.HtmlResult;
     }
 
     
