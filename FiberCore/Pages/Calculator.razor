@@ -1,6 +1,6 @@
 ﻿@page "/Calculator"
 @using FiberCore.Services
-@inject FiberCalculator fiber_calculator
+@inject FiberCalculator fibcalc
 @inject FibercalcState calcState
 @inject NavigationManager navigation
 
@@ -135,7 +135,7 @@
     <br>
     <div>
     <label>Длина элемента, см :</label>
-    <input asp-for="Length" type="number" step="0.01" value=30 required />
+    <input asp-for="Length" type="number" step="0.01"  @bind = "fibcalc.Length" required />
     </div>
 
     <br>
@@ -143,13 +143,13 @@
     <br>
     <div>
         <label>Момент My:</label>
-        <input asp-for="My" type="number" step="0.01" value=1000 />
+        <input asp-for="My" type="number" step="0.01" @bind = "fibcalc.My" />
     
         <label>Продольная сила N:</label>
-        <input asp-for="N" type="number" step="0.01" value=0 />
+        <input asp-for="N" type="number" step="0.01" @bind = "fibcalc.N"  />
     
         <label>Поперечная сила Qx:</label>
-        <input asp-for="Qx" type="number" step="0.01" value=0 />
+        <input asp-for="Qx" type="number" step="0.01" @bind = "fibcalc.Qx" />
     </div>
     <br>
 
@@ -159,24 +159,24 @@
     <div>
         <div>
         <label>Yft:</label>
-        <input asp-for="Yft" type="number" step="0.1" value=1.3 />
+        <input asp-for="Yft" type="number" step="0.1" @bind = "fibcalc.Yft"/>
 
         <label>Yb:</label>
-        <input asp-for="Yb" type="number" step="0.1" value=1.3 />
+        <input asp-for="Yb" type="number" step="0.1" @bind = "fibcalc.Yb" />
         </div>
         <br>
         <div>
         <label>Yb1:</label>
-        <input asp-for="Yb1" type="number" step="0.1" value=0.9 />
+        <input asp-for="Yb1" type="number" step="0.1"  @bind = "fibcalc.Yb1" />
 
         <label>Yb2:</label>
-        <input asp-for="Yb2" type="number" step="0.1" value=0.9 />
+        <input asp-for="Yb2" type="number" step="0.1"  @bind = "fibcalc.Yb2"  />
 
         <label>Yb3:</label>
-        <input asp-for="Yb3" type="number" step="0.1" value=0.9 />
+        <input asp-for="Yb3" type="number" step="0.1"  @bind = "fibcalc.Yb3" />
 
         <label>Yb5:</label>
-        <input asp-for="Yb5" type="number" step="0.1" value=0.9 />
+        <input asp-for="Yb5" type="number" step="0.1"  @bind = "fibcalc.Yb5" />
         </div>
     </div>
 
@@ -185,14 +185,14 @@
     
     <div>
         <label>Тип бетона:</label>
-        <input asp-for="BetonType" type="text" list="options_betontype" value="Тяжелый" required />
+        <input asp-for="BetonType" type="text" list="options_betontype" @bind = "fibcalc.BetonType" required />
         <datalist id="options_betontype">
             <option value="Тяжелый">Тяжелый</option>
             <option value="Мелкозернистый">Мелкозернистый</option>
             <option value="Легкий">Легкий</option>
         </datalist>
         <label>Индекс подкласса:</label>
-        <input asp-for="BetonIndex" type="text" list="options_betonindex" value="a" required />
+        <input asp-for="BetonIndex" type="text" list="options_betonindex" @bind = "fibcalc.BetonIndex"  required />
         <datalist id="options_betonindex">
             <option value="a">a</option>
             <option value="b">b</option>
@@ -254,19 +254,19 @@
     <table>
         <tr>
             <td><label>Фибра Ef, кг/см2</label></td>
-            <td><input asp-for=Ef type="number" step="1.0" value=2141404.0200 /></td>
+            <td><input asp-for=Ef type="number" step="1.0" @bind ="fibcalc.Ef" /></td>
         </tr>
         <tr>
             <td><label> Коэффициент армирования</label></td>
-            <td><input asp-for=mu_fv type="number" step="0.1" value=0.0200 /></td>
+            <td><input asp-for=mu_fv type="number" step="0.1" @bind ="fibcalc.mu_fv"  /></td>
         </tr>
         <tr>
             <td><label>Фибробетон растяжение Efb t, кг/см2</label></td>
-            <td><input asp-for=Efbt type="number" step="1.0" value=367607.6901 /></td>
+            <td><input asp-for=Efbt type="number" step="1.0" @bind ="fibcalc.Efbt"/></td>
         </tr>
         <tr>
             <td><label>Бетон-матрица Eb, кг/см2</label></td>
-            <td><input asp-for=Eb type="number" step="1.0" value=331407.7650 /></td>
+            <td><input asp-for=Eb type="number" step="1.0" @bind ="fibcalc.Eb" /></td>
         </tr>
     </table>
     <br>
@@ -277,12 +277,12 @@
     <div>
         <div>
             <label>Модуль упругости арматуры:</label>
-            <input asp-for="Es" type="number" step="0.1" value=2039432.40 />
+            <input asp-for="Es" type="number" step="0.1" @bind ="fibcalc.Es" />
         </div>
         <br>
         <div>
         <label>Класс aрматуры на растяжение:</label>
-        <input asp-for="A_Rs" type="text" list="options3" value="A240" required />
+        <input asp-for="A_Rs" type="text" list="options3" @bind = "fibcalc.A_Rs" required />
         <datalist id="options3">
             <option value="A240">A240</option>
             <option value="A400">A400</option>
@@ -319,9 +319,9 @@
 
     private void Calculate()
     {
-        fiber_calculator.CalcType = 0;
+        fibcalc.CalcType = 0;
 
-        calcState.HtmlResult = fiber_calculator.RunCalc();
+        calcState.HtmlResult = fibcalc.RunCalc();
 
         navigation.NavigateTo($"/CalculationResult?SectionType={0}&CalcType={0}");
 

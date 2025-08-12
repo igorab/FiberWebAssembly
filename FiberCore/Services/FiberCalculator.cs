@@ -41,9 +41,9 @@ public class FiberCalculator
     public double R1 { get; set; }
 
     // класс бетона
-    public string BetonType { get; set; }
+    public string BetonType { get; set; } = "Тяжелый";
 
-    public string BetonIndex { get; set; }
+    public string BetonIndex { get; set; } = "a";
 
     public string Bft3 { get; set; }
 
@@ -52,11 +52,11 @@ public class FiberCalculator
     public string Bfb { get; set; }
 
     // усилия внешние
-    public double Mx { get; set; }
-    public double My { get; set; }
-    public double N { get; set; }
-    public double Qx { get; set; }
-    public double Qy { get; set; }
+    public double Mx { get; set; } = 0;
+    public double My { get; set; } = 1000;
+    public double N { get; set; } = 0;
+    public double Qx { get; set; } = 0;
+    public double Qy { get; set; } = 0;
     // Эксцентриситет
     public double Ml { get; set; }
     public double eN { get; set; }
@@ -71,7 +71,7 @@ public class FiberCalculator
 
     public double a1_cm { get; set; }
 
-    public string A_Rs { get; set; }
+    public string A_Rs { get; set; } = "A240";
 
     public string A_Rsc { get; set; }
 
@@ -80,20 +80,20 @@ public class FiberCalculator
     public double Rsc { get; set; }
 
     // модуль упругости арматуры
-    public double Es { get; set; }
+    public double Es { get; set; } = 2039432.40;
     // модули упругости 
-    public double Ef { get; set; } // фибра
-    public double Efbt { get; set; } //фибробетон-растяжение
-    public double Eb { get; set; } // бетон-матрица, сжатие
-    public double mu_fv { get; set; } // коэффициент фибрового армирования
+    public double Ef { get; set; } = 2141404.0200; // фибра
+    public double Efbt { get; set; } = 367607.6901; //фибробетон-растяжение
+    public double Eb { get; set; } = 331407.7650; // бетон-матрица, сжатие
+    public double mu_fv { get; set; } = 0.0200; // коэффициент фибрового армирования
 
     // коэффициенты надежности
-    public double Yft { get;  set; }
-    public double Yb { get;  set; }
-    public double Yb1 { get;  set; }
-    public double Yb2 { get;  set; }
-    public double Yb3 { get;  set; }
-    public double Yb5 { get;  set; }
+    public double Yft { get; set; } = 1.3;
+    public double Yb { get; set; } = 1.3;
+    public double Yb1 { get;  set; } = 0.9;
+    public double Yb2 { get;  set; } = 0.9;
+    public double Yb3 { get;  set; } = 0.9;
+    public double Yb5 { get;  set; } = 0.9;
 
     #endregion
 
