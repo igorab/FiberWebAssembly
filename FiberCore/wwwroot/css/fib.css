@@ -1,4 +1,5 @@
-﻿body {
+﻿<style >
+body {
     background-color: #f4f4f4; /* Светлый фон */
     font-family: 'Arial', sans-serif; /* Шрифт */
     color: #333; /* Цвет текста */
@@ -18,16 +19,10 @@ h4, h5, h6 {
     margin-bottom: 10px; /* Отступ снизу */
 }
 
-.form-group {
-    display: flex; /* Используем Flexbox для выравнивания */
-    align-items: center; /* Выравнивание по вертикали */
-    margin-bottom: 15px; /* Отступ между группами */
-}
-
 label {
     font-weight: bold; /* Жирный шрифт для меток */
-    width: 150px; /* Ширина меток */
-    margin-right: 10px; /* Отступ справа от метки */
+    display: block; /* Отображение меток в блоке */
+    margin-top: 10px; /* Отступ сверху */
 }
 
 button {
@@ -56,3 +51,5 @@ input[type="number"], input[type="text"], input[type="radio"] {
         border-color: #007BFF; /* Цвет рамки при фокусе */
         outline: none; /* Убираем обводку */
     }
+
+</style >
