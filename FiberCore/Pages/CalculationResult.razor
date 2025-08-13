@@ -3,22 +3,24 @@
 @inject NavigationManager Navigation
 @inject FibercalcState calcState
 
+
+
 <h3>Результаты расчета</h3>
 
-@if (!string.IsNullOrEmpty(HtmlResult))
+@if (HtmlContent != null)
 {
-    <p>Расчет: <div>@HtmlResult</div> </p>    
+    <p>Расчет: <div>@HtmlContent</div> </p>
 }
 else
 {
-    <p>Нет доступных данных для отображения.</p>
+    <p>Нет доступных данных для отображения</p>
 }
 
 <button @onclick="GoBack">Назад</button>
 
 @code {
     [Parameter]
-    public string? HtmlResult { get; set; }
+    public MarkupString? HtmlContent { get; set; }
 
 
     protected override void OnInitialized()
@@ -29,7 +31,7 @@ else
         var parameters = System.Web.HttpUtility.ParseQueryString(q);        
 
         //передача через состояние приложения(Application State)
-        HtmlResult = calcState.HtmlResult;
+        HtmlContent = (MarkupString) calcState.HtmlResult;
     }
 
     

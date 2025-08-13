@@ -25,31 +25,31 @@ public class FiberCalculator
 
     // размеры
     public int SectionType { get; set; }
-    public double Length { get; set; }       
-    public double Width { get; set; }
-    public double Height { get; set; }
+    public double Length { get; set; } = 0;
+    public double Width { get; set; } = 30;
+    public double Height { get; set; } = 60;
     public double b => Width;
     public double h => Height;
-    public double bf { get; set; }
-    public double hf { get; set; }
-    public double bw { get; set; }
-    public double hw { get; set; }
-    public double b1f { get; set; }
-    public double h1f { get; set; }
+    public double bf { get; set; } = 30;
+    public double hf { get; set; } = 60;
+    public double bw { get; set; } = 30;
+    public double hw { get; set; } = 60;
+    public double b1f { get; set; } = 30;
+    public double h1f { get; set; } = 60;
 
-    public double R2 { get; set; }
-    public double R1 { get; set; }
+    public double R2 { get; set; } = 60;
+    public double R1 { get; set; } = 30;
 
     // класс бетона
     public string BetonType { get; set; } = "Тяжелый";
 
     public string BetonIndex { get; set; } = "a";
 
-    public string Bft3 { get; set; }
+    public string Bft3 { get; set; } = "B3i";
 
-    public string Bft { get; set; }
+    public string Bft { get; set; } = "Bft3";
 
-    public string Bfb { get; set; }
+    public string Bfb { get; set; } = "B30";
 
     // усилия внешние
     public double Mx { get; set; } = 0;
@@ -63,17 +63,17 @@ public class FiberCalculator
     public double e0 { get; set; }
 
     // арматура
-    public double As { get; set; }
+    public double As { get; set; } = 0;
 
-    public double A1s { get; set; }
+    public double A1s { get; set; } = 0;
 
-    public double a_cm { get; set; }
+    public double a_cm { get; set; } = 0;
 
-    public double a1_cm { get; set; }
+    public double a1_cm { get; set; } = 0;
 
     public string A_Rs { get; set; } = "A240";
 
-    public string A_Rsc { get; set; }
+    public string A_Rsc { get; set; } = "A240";
 
     public double Rs { get; set; }
 
@@ -96,18 +96,9 @@ public class FiberCalculator
     public double Yb5 { get;  set; } = 0.9;
 
     #endregion
-
+ 
     public FiberCalculator()
-    {
-        FiberQ = "";
-        FiberAns = "";
-        Bft3 = "";
-        Bft = "";
-        Bfb = "";
-        BetonType = "";
-        BetonIndex = "";
-        A_Rs = "";
-        A_Rsc = "";
+    {       
         //Efb = 2141404.0200;            
     }
 
