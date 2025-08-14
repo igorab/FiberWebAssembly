@@ -216,20 +216,37 @@ namespace BSFiberCore.Models.BL
         /// <summary>
         /// списки свойств материалов
         /// </summary>
-        public void InitMaterials()
+        public async Task InitMaterials()
         {
-            /*List<RebarDiameters>*/   m_RebarDiameters = BSData.LoadRebarDiameters();
-            /*List<Rebar>*/            m_Rebar = BSData.LoadRebar();
-            /*List<Elements>*/         FiberConcrete = BSData.LoadFiberConcreteTable();
+            m_RebarDiameters = BSData.LoadRebarDiameters();
 
-            /*List<BSFiberBeton>*/     Bft3Lst =  BSQuery.LoadBSFiberBeton();
+            m_Rebar = BSData.LoadRebar();
 
-            /*List<FiberBft>*/         BftnLst = BSData.LoadFiberBft();
+            FiberConcrete = BSData.LoadFiberConcreteTable();
 
-            /*List<Beton>*/            BfnLst = BSData.LoadBetonData(0);                           
+            Bft3Lst = BSQuery.LoadBSFiberBeton();
+
+            BftnLst = BSData.LoadFiberBft();
+
+            BfnLst = BSData.LoadBetonData(0);                                                               
         }
 
-        private void SelectedFiberBetonValues(string fib_i, string bft3n,  ref double numRfbt3n, ref double numRfbt2n)
+        public async Task InitMaterialsAsync()
+        {
+            FiberConcrete = await MaterialServices.GetFiberConcreteTableAsync();
+
+            Bft3Lst = await MaterialServices.GetBSFiberBetonAsync();
+
+            BftnLst = await MaterialServices.GetFiberBftAsync();
+
+            BfnLst = await MaterialServices.GetBetonDataAsync(0);
+
+            m_RebarDiameters = await MaterialServices.GetRebarDiametersAsync();
+
+            m_Rebar = await MaterialServices.GetRebarAsync();
+        }
+
+        private void SelectedFiberBetonValues(string fib_i, string bft3n, ref double numRfbt3n, ref double numRfbt2n)
         {
             try
             {
@@ -249,7 +266,7 @@ namespace BSFiberCore.Models.BL
                     numRfbt2n = BSHelper.MPA2kgsm2(fib?.Rfbt2n);
                 }
             }
-            catch 
+            catch
             {
                 numRfbt3n = 0;
                 numRfbt2n = 0;
