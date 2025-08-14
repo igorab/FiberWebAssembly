@@ -2,275 +2,282 @@
 @using FiberCore.Services
 @inject FiberCalculator fibcalc
 @inject FibercalcState calcState
-@inject NavigationManager navigation
+@inject NavigationManager Navigation
 
 <head>
     <link href="css/fib.css" rel="stylesheet" />
 </head>
 
-<form asp-action = "Calculate" method="post">
+<form>
+<br>
+<h4>Метод расчета:</h4>
+<div>    
+    <label for="option1"> по предельным усилиям:</label>
+    <input type="radio" name="calctype" id="option1" value="0" @onchange="OnCalculationTypeChanged" checked/>
+    
+    <label for="option2">по нелинейной деформационной модели:</label>
+    <input type="radio" name="calctype" id="option2" value="1" @onchange="OnCalculationTypeChanged" />
+</div>
+<br>
 
+<h5>Геометрические характеристики</h5>
+<p>Выберите тип сечения:</p>
+<div>
+    <label for="section1">Прямоугольное:</label>
+        <input asp-for="SectionType" type="radio" id="Rectangle" name="SectionType" value="4" @onchange="OnSectionTypeChanged" checked />
     <br>
-    <h4>Метод расчета:</h4>
-    <div>
-        <label for="static_calc">по предельным усилиям:</label>
-        <input asp-for=CalcType type="radio" id="static_calc" name="CalcType" value=0 checked />
-        <br>
-        <label for="ndm">по нелинейной деформационной модели:</label>
-        <input asp-for=CalcType type="radio" id="ndm" name="CalcType" value=1 />
+    <div style="margin-left: 40px;">
+        <label>Ширина:</label>
+        <input asp-for="Width" type="number" step="0.01" @bind="fibcalc.Width" required />
+
+        <label>Высота:</label>
+        <input asp-for="Height" type="number" step="0.01" @bind="fibcalc.Height" required />
     </div>
-    <br>
-
-    <h5>Геометрические характеристики</h5>
-    <p>Выберите тип сечения:</p>
-    <div>
-        <label for="section1">Прямоугольное:</label> 
-        <input asp-for="SectionType" type="radio" id="Rectangle" name="SectionType" value="4" checked />
+    <br>        
+    <label for="section2">Тавр T</label>
+        <input asp-for="SectionType" type="radio" id="TBeam" name="SectionType" value="1" @onchange="OnSectionTypeChanged" />
+    &ndash;&ndash;
+    <label for="section2">Тавр _L</label>
+        <input asp-for="SectionType" type="radio" id="LBeam" name="SectionType" value="5" @onchange="OnSectionTypeChanged" />
+    &ndash;&ndash;
+    <label for="section2">Двутавр</label>
+        <input asp-for="SectionType" type="radio" id="IBeam" name="SectionType" value="2" @onchange="OnSectionTypeChanged" />
         <br>
+    <p>
         <div style="margin-left: 40px;">
-            <label>Ширина:</label>
-            <input asp-for="Width" type="number" step="0.01" @bind="fibcalc.Width" required />
-
-            <label>Высота:</label>
-            <input asp-for="Height" type="number" step="0.01" @bind="fibcalc.Height" required />
-        </div>
-        <br>        
-        <label for="section2">Тавр T</label>
-        <input asp-for="SectionType" type="radio" id="TBeam" name="SectionType" value="1" />
-        &ndash;&ndash;
-        <label for="section2">Тавр _L</label>
-        <input asp-for="SectionType" type="radio" id="LBeam" name="SectionType" value="5" />
-        &ndash;&ndash;
-        <label for="section2">Двутавр</label>
-        <input asp-for="SectionType" type="radio" id="IBeam" name="SectionType" value="2" />        
-        <br>
-        <p>
-            <div style="margin-left: 40px;">
-                <label>Нижняя полка  :</label>
-                <label>bf:</label>
-                <input asp-for="bf" type="number" step="0.01" @bind="fibcalc.bf"  required />
-                <label>hf:</label>
-                <input asp-for="hf" type="number" step="0.01" @bind="fibcalc.hf"  required />
-            </div><br>
-            <div style="margin-left: 40px;">
-                <label>Стенка        :</label>
-                <label>bw:</label>
-                <input asp-for="bw" type="number" step="0.01"  @bind="fibcalc.bw" required />
-                <label>hw:</label>
-                <input asp-for="hw" type="number" step="0.01"  @bind="fibcalc.hw" required />
-            </div><br>
-            <div style="margin-left: 40px;">
-                <label>Верхняя полка :  </label>
-                <label>b1f:</label>
-                <input asp-for="b1f" type="number" step="0.01"  @bind="fibcalc.b1f" required />
-                <label>h1f:</label>
-                <input asp-for="h1f" type="number" step="0.01"  @bind="fibcalc.h1f" required />
-            </div>
-        </p>
-        <br>
-        <label for="section3">Кольцевое сечение:</label>
-        <input asp-for="SectionType" type="radio" id="Ring" name="SectionType"  value="3" />        
+            <label>Нижняя полка  :</label>
+            <label>bf:</label>
+            <input asp-for="bf" type="number" step="0.01" @bind="fibcalc.bf"  required />
+            <label>hf:</label>
+            <input asp-for="hf" type="number" step="0.01" @bind="fibcalc.hf"  required />
+        </div><br>
         <div style="margin-left: 40px;">
-            <label>Радиус внешний R2:</label>
-            <input asp-for="R2" type="number" step="0.01" @bind="fibcalc.R2" required />
-
-            <label>Радиус внутренний R1:</label>
-            <input asp-for="R1" type="number" step="0.01" @bind="fibcalc.R1" required />
+            <label>Стенка        :</label>
+            <label>bw:</label>
+            <input asp-for="bw" type="number" step="0.01"  @bind="fibcalc.bw" required />
+            <label>hw:</label>
+            <input asp-for="hw" type="number" step="0.01"  @bind="fibcalc.hw" required />
+        </div><br>
+        <div style="margin-left: 40px;">
+            <label>Верхняя полка :  </label>
+            <label>b1f:</label>
+            <input asp-for="b1f" type="number" step="0.01"  @bind="fibcalc.b1f" required />
+            <label>h1f:</label>
+            <input asp-for="h1f" type="number" step="0.01"  @bind="fibcalc.h1f" required />
         </div>
-    </div>
+    </p>
     <br>
-    <br>
-    <div>
-    <label>Длина элемента, см :</label>
-    <input asp-for="Length" type="number" step="0.01"  @bind="fibcalc.Length" required />
-    </div>
+    <label for="section3">Кольцевое сечение:</label>
+        <input asp-for="SectionType" type="radio" id="Ring" name="SectionType" value="3" @onchange="OnSectionTypeChanged" />
+        <div style="margin-left: 40px;">
+        <label>Радиус внешний R2:</label>
+        <input asp-for="R2" type="number" step="0.01" @bind="fibcalc.R2" required />
 
-    <br>
-    <h6>Усилия</h6>
-    <br>
-    <div>
-        <label>Момент My:</label>
-        <input asp-for="My" type="number" step="0.01" @bind = "fibcalc.My" />
+        <label>Радиус внутренний R1:</label>
+        <input asp-for="R1" type="number" step="0.01" @bind="fibcalc.R1" required />
+    </div>
+</div>
+<br>
+<br>
+<div>
+<label>Длина элемента, см :</label>
+<input asp-for="Length" type="number" step="0.01"  @bind="fibcalc.Length" required />
+</div>
+
+<br>
+<h6>Усилия</h6>
+<br>
+<div>
+    <label>Момент My:</label>
+    <input asp-for="My" type="number" step="0.01" @bind = "fibcalc.My" />
     
-        <label>Продольная сила N:</label>
-        <input asp-for="N" type="number" step="0.01" @bind = "fibcalc.N"  />
+    <label>Продольная сила N:</label>
+    <input asp-for="N" type="number" step="0.01" @bind = "fibcalc.N"  />
     
-        <label>Поперечная сила Qx:</label>
-        <input asp-for="Qx" type="number" step="0.01" @bind = "fibcalc.Qx" />
-    </div>
-    <br>
+    <label>Поперечная сила Qx:</label>
+    <input asp-for="Qx" type="number" step="0.01" @bind = "fibcalc.Qx" />
+</div>
+<br>
 
-    <br>
-    <h6>Коэффициенты</h6>
+<br>
+<h6>Коэффициенты</h6>
+<br>
+<div>
+    <div>
+    <label>Yft:</label>
+    <input asp-for="Yft" type="number" step="0.1" @bind = "fibcalc.Yft"/>
+
+    <label>Yb:</label>
+    <input asp-for="Yb" type="number" step="0.1" @bind = "fibcalc.Yb" />
+    </div>
     <br>
     <div>
-        <div>
-        <label>Yft:</label>
-        <input asp-for="Yft" type="number" step="0.1" @bind = "fibcalc.Yft"/>
+    <label>Yb1:</label>
+    <input asp-for="Yb1" type="number" step="0.1"  @bind = "fibcalc.Yb1" />
 
-        <label>Yb:</label>
-        <input asp-for="Yb" type="number" step="0.1" @bind = "fibcalc.Yb" />
-        </div>
-        <br>
-        <div>
-        <label>Yb1:</label>
-        <input asp-for="Yb1" type="number" step="0.1"  @bind = "fibcalc.Yb1" />
+    <label>Yb2:</label>
+    <input asp-for="Yb2" type="number" step="0.1"  @bind = "fibcalc.Yb2"  />
 
-        <label>Yb2:</label>
-        <input asp-for="Yb2" type="number" step="0.1"  @bind = "fibcalc.Yb2"  />
+    <label>Yb3:</label>
+    <input asp-for="Yb3" type="number" step="0.1"  @bind = "fibcalc.Yb3" />
 
-        <label>Yb3:</label>
-        <input asp-for="Yb3" type="number" step="0.1"  @bind = "fibcalc.Yb3" />
-
-        <label>Yb5:</label>
-        <input asp-for="Yb5" type="number" step="0.1"  @bind = "fibcalc.Yb5" />
-        </div>
+    <label>Yb5:</label>
+    <input asp-for="Yb5" type="number" step="0.1"  @bind = "fibcalc.Yb5" />
     </div>
+</div>
 
-    <h6>Характеристики бетона</h6>
-    <br>
+<h6>Характеристики бетона</h6>
+<br>
     
-    <div>
-        <label>Тип бетона:</label>
-        <input asp-for = "BetonType" type="text" list="options_betontype" @bind="fibcalc.BetonType" required />
-        <datalist id="options_betontype">
-            <option value="Тяжелый">Тяжелый</option>
-            <option value="Мелкозернистый">Мелкозернистый</option>
-            <option value="Легкий">Легкий</option>
-        </datalist>
-        <label>Индекс подкласса:</label>
-        <input asp-for = "BetonIndex" type="text" list="options_betonindex" @bind="fibcalc.BetonIndex"  required />
-        <datalist id="options_betonindex">
-            <option value="a">a</option>
-            <option value="b">b</option>
-            <option value="c">c</option>
-            <option value="d">d</option>
-            <option value="e">e</option>
-        </datalist>
-    </div>
-    <br>
+<div>
+    <label>Тип бетона:</label>
+    <input asp-for = "BetonType" type="text" list="options_betontype" @bind="fibcalc.BetonType" required />
+    <datalist id="options_betontype">
+        <option value="Тяжелый">Тяжелый</option>
+        <option value="Мелкозернистый">Мелкозернистый</option>
+        <option value="Легкий">Легкий</option>
+    </datalist>
+    <label>Индекс подкласса:</label>
+    <input asp-for = "BetonIndex" type="text" list="options_betonindex" @bind="fibcalc.BetonIndex"  required />
+    <datalist id="options_betonindex">
+        <option value="a">a</option>
+        <option value="b">b</option>
+        <option value="c">c</option>
+        <option value="d">d</option>
+        <option value="e">e</option>
+    </datalist>
+</div>
+<br>
     
     
+<div>
+    <label>Класс бетона на растяжение Bft3:</label>
+    <input asp-for="Bft3" type="text" list="options_bft3" @bind="fibcalc.Bft3" required />
+    <datalist id="options_bft3">
+        <option value="B1i">B1i</option>
+        <option value="B1,5i">B1,5i</option>
+        <option value="B2i">B2i</option>
+        <option value="B2,5i">B2,5i</option>
+        <option value="B3i">B3i</option>
+    </datalist>
+</div>
+<br>
+<div>
+    <label>Класс бетона на растяжение Bft:</label>
+    <input asp-for="Bft" type="text" list="options_bft" @bind="fibcalc.Bft" required />
+    <datalist id="options_bft">
+        <option value="Bft1">Bft1</option>
+        <option value="Bft1,5">Bft1,5</option>
+        <option value="Bft2">Bft2</option>
+        <option value="Bft2,5">Bft2,5</option>            
+        <option value="Bft3">Bft3</option>
+        <option value="Bft3,5">Bft3,5</option>
+        <option value="Bft4">Bft4</option>
+        <option value="Bft4,5">Bft4,5</option>
+        <option value="Bft5">Bft5</option>
+        <option value="Bft5,5">Bft5,5</option>
+        <option value="Bft6">Bft6</option>            
+    </datalist>
+
+</div>
+<br>
+<div>
+    <label>Класс бетона на сжатие Bf:</label>
+    <input asp-for="Bfb" type="text" list="options_bf" @bind = "fibcalc.Bfb" required />
+    <datalist id="options_bf">
+        <option value="B12.5">B12.5</option>
+        <option value="B15">B15</option>
+        <option value="B20">B20</option>
+        <option value="B25">B25</option>
+        <option value="B30">B30</option>
+        <option value="B35">B35</option>
+        <option value="B40">B40</option>
+    </datalist>
+</div>
+
+<h6>Модули упругости:</h6>
+
+<table>
+    <tr>
+        <td><label>Фибра Ef, кг/см2</label></td>
+        <td><input asp-for=Ef type="number" step="1.0" @bind ="fibcalc.Ef" /></td>
+    </tr>
+    <tr>
+        <td><label> Коэффициент армирования</label></td>
+        <td><input asp-for=mu_fv type="number" step="0.1" @bind ="fibcalc.mu_fv"  /></td>
+    </tr>
+    <tr>
+        <td><label>Фибробетон растяжение Efb t, кг/см2</label></td>
+        <td><input asp-for=Efbt type="number" step="1.0" @bind ="fibcalc.Efbt"/></td>
+    </tr>
+    <tr>
+        <td><label>Бетон-матрица Eb, кг/см2</label></td>
+        <td><input asp-for=Eb type="number" step="1.0" @bind ="fibcalc.Eb" /></td>
+    </tr>
+</table>
+<br>
+
+<br>
+<h6>Характеристики арматуры</h6>
+<br>
+<div>
     <div>
-        <label>Класс бетона на растяжение Bft3:</label>
-        <input asp-for="Bft3" type="text" list="options_bft3" @bind="fibcalc.Bft3" required />
-        <datalist id="options_bft3">
-            <option value="B1i">B1i</option>
-            <option value="B1,5i">B1,5i</option>
-            <option value="B2i">B2i</option>
-            <option value="B2,5i">B2,5i</option>
-            <option value="B3i">B3i</option>
-        </datalist>
+        <label>Модуль упругости арматуры:</label>
+        <input asp-for="Es" type="number" step="0.1" @bind ="fibcalc.Es" />
     </div>
     <br>
     <div>
-        <label>Класс бетона на растяжение Bft:</label>
-        <input asp-for="Bft" type="text" list="options_bft" @bind="fibcalc.Bft3" required />
-        <datalist id="options_bft">
-            <option value="Bft1">Bft1</option>
-            <option value="Bft1,5">Bft1,5</option>
-            <option value="Bft2">Bft2</option>
-            <option value="Bft2,5">Bft2,5</option>            
-            <option value="Bft3">Bft3</option>
-            <option value="Bft3,5">Bft3,5</option>
-            <option value="Bft4">Bft4</option>
-            <option value="Bft4,5">Bft4,5</option>
-            <option value="Bft5">Bft5</option>
-            <option value="Bft5,5">Bft5,5</option>
-            <option value="Bft6">Bft6</option>            
-        </datalist>
-
+    <label>Класс aрматуры на растяжение:</label>
+    <input asp-for="A_Rs" type="text" list="options3" @bind = "fibcalc.A_Rs" required />
+    <datalist id="options3">
+        <option value="A240">A240</option>
+        <option value="A400">A400</option>
+        <option value="A500">A500</option>
+        <option value="A600">A600</option>
+    </datalist>        
+    <label>As:</label>
+    <input asp-for="As" type="number" step="0.01" @bind="fibcalc.As" />
+    <label>a:</label>
+    <input asp-for="a_cm" type="number" step="0.01" @bind="fibcalc.a_cm" />
     </div>
     <br>
     <div>
-        <label>Класс бетона на сжатие Bf:</label>
-        <input asp-for="Bfb" type="text" list="options_bf" @bind = "fibcalc.Bfb" required />
-        <datalist id="options_bf">
-            <option value="B12.5">B12.5</option>
-            <option value="B15">B15</option>
-            <option value="B20">B20</option>
-            <option value="B25">B25</option>
-            <option value="B30">B30</option>
-            <option value="B35">B35</option>
-            <option value="B40">B40</option>
-        </datalist>
-    </div>
-
-    <h6>Модули упругости:</h6>
-
-    <table>
-        <tr>
-            <td><label>Фибра Ef, кг/см2</label></td>
-            <td><input asp-for=Ef type="number" step="1.0" @bind ="fibcalc.Ef" /></td>
-        </tr>
-        <tr>
-            <td><label> Коэффициент армирования</label></td>
-            <td><input asp-for=mu_fv type="number" step="0.1" @bind ="fibcalc.mu_fv"  /></td>
-        </tr>
-        <tr>
-            <td><label>Фибробетон растяжение Efb t, кг/см2</label></td>
-            <td><input asp-for=Efbt type="number" step="1.0" @bind ="fibcalc.Efbt"/></td>
-        </tr>
-        <tr>
-            <td><label>Бетон-матрица Eb, кг/см2</label></td>
-            <td><input asp-for=Eb type="number" step="1.0" @bind ="fibcalc.Eb" /></td>
-        </tr>
-    </table>
-    <br>
-
-    <br>
-    <h6>Характеристики арматуры</h6>
-    <br>
-    <div>
-        <div>
-            <label>Модуль упругости арматуры:</label>
-            <input asp-for="Es" type="number" step="0.1" @bind ="fibcalc.Es" />
-        </div>
-        <br>
-        <div>
-        <label>Класс aрматуры на растяжение:</label>
-        <input asp-for="A_Rs" type="text" list="options3" @bind = "fibcalc.A_Rs" required />
-        <datalist id="options3">
+    <label>Класс aрматуры на сжатие:</label>
+    <input asp-for="A_Rsc" type="text" list="options4" @bind="fibcalc.A_Rsc" required />
+        <datalist id="options4">
             <option value="A240">A240</option>
             <option value="A400">A400</option>
             <option value="A500">A500</option>
             <option value="A600">A600</option>
         </datalist>        
-        <label>As:</label>
-        <input asp-for="As" type="number" step="0.01" @bind="fibcalc.As" />
-        <label>a:</label>
-        <input asp-for="a_cm" type="number" step="0.01" @bind="fibcalc.a_cm" />
-        </div>
-        <br>
-        <div>
-        <label>Класс aрматуры на сжатие:</label>
-        <input asp-for="A_Rsc" type="text" list="options4" @bind="fibcalc.A_Rsc" required />
-            <datalist id="options4">
-                <option value="A240">A240</option>
-                <option value="A400">A400</option>
-                <option value="A500">A500</option>
-                <option value="A600">A600</option>
-            </datalist>        
-        <label>A's:</label>
-        <input asp-for="A1s" type="number" step="0.01" @bind="fibcalc.A1s"  />
-        <label>a':</label>
-        <input asp-for="a1_cm" type="number" step="0.01" @bind="fibcalc.a1_cm" />
-        </div>
+    <label>A's:</label>
+    <input asp-for="A1s" type="number" step="0.01" @bind="fibcalc.A1s"  />
+    <label>a':</label>
+    <input asp-for="a1_cm" type="number" step="0.01" @bind="fibcalc.a1_cm" />
     </div>
+</div>
 
-    <br>
-    <button type="submit" @onclick = "Calculate"> Выполнить расчет </button>
+<br>
+<button type="submit" @onclick = "Calculate"> Выполнить расчет </button>
 </form>
 
 @code {
 
-    private void Calculate()
+    private void OnCalculationTypeChanged(ChangeEventArgs e)
     {
-        fibcalc.CalcType = 0;
+        fibcalc.CalcType = int.Parse(e.Value.ToString()); // Обновляем переменную на основе выбранного значения
+    }
 
+    private void OnSectionTypeChanged(ChangeEventArgs e)
+    {
+        fibcalc.SectionType = int.Parse(e.Value.ToString()); // Обновляем переменную на основе выбранного значения
+    }
+
+    private void Calculate()
+    {        
         calcState.HtmlResult = fibcalc.RunCalc();
 
-        navigation.NavigateTo($"/CalculationResult?SectionType={0}&CalcType={0}");
+        Navigation.NavigateTo($"/CalculationResult?SectionType={fibcalc.SectionType}&CalcType={fibcalc.CalcType}");
 
         // передача параметров через через URL
        // navigation.NavigateTo($"/CalculationResult?HtmlResult={Uri.EscapeDataString(resHtml)}&CalcType ={0}"); 
