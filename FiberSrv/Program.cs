@@ -1,5 +1,6 @@
 using FiberSrv.Components;
 using FiberSrv.Data;
+using System.Data.Entity.Spatial;
 
 var builder = WebApplication.CreateBuilder(args);
 

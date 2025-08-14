@@ -21,7 +21,7 @@ namespace BSFiberCore.Models.BL.Lib
 
         public static string DataPath(string _file)  => Path.Combine(Environment.CurrentDirectory, "Data", _file);
 
-        public static readonly string connectionString = "Data Source=.\\Data\\Fiber.db";
+        public static readonly string connectionString = "Data Source= Data\\Fiber.db";
                 
 
         public static bool Connect()
@@ -212,7 +212,7 @@ namespace BSFiberCore.Models.BL.Lib
                     return output.ToList();
                 }
             }
-            catch
+            catch (Exception _e)
             {
                 return new List<Beton>();
             }
@@ -232,7 +232,7 @@ namespace BSFiberCore.Models.BL.Lib
                     return output.ToList();
                 }
             }
-            catch
+            catch (Exception _e)
             {
                 return new List<Beton>();
             }
@@ -272,7 +272,7 @@ namespace BSFiberCore.Models.BL.Lib
                     return output.ToList();
                 }
             }
-            catch
+            catch (Exception _e)
             {
                 return new List<Rebar>();
             }
@@ -861,7 +861,7 @@ namespace BSFiberCore.Models.BL.Lib
                     return output.ToList();
                 }
             }
-            catch
+            catch (Exception _e)
             {
                 return new List<RebarDiameters>();
             }
