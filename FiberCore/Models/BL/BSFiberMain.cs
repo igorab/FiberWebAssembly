@@ -216,9 +216,10 @@ namespace BSFiberCore.Models.BL
         /// <summary>
         /// списки свойств материалов
         /// </summary>
-        public async Task InitMaterials()
+        public void InitMaterials()
         {
-            m_RebarDiameters = BSData.LoadRebarDiameters();
+            m_RebarDiameters =  MaterialServices.GetRebarDiametersAsync().Result;
+            //m_RebarDiameters = BSData.LoadRebarDiameters();
 
             m_Rebar = BSData.LoadRebar();
 
@@ -228,22 +229,24 @@ namespace BSFiberCore.Models.BL
 
             BftnLst = BSData.LoadFiberBft();
 
-            BfnLst = BSData.LoadBetonData(0);                                                               
+            BfnLst = BSData.LoadBetonData(0);
+
+            return  ;
         }
 
         public async Task InitMaterialsAsync()
         {
+            m_RebarDiameters = await MaterialServices.GetRebarDiametersAsync();
+            
+            m_Rebar = await MaterialServices.GetRebarAsync();
+
             FiberConcrete = await MaterialServices.GetFiberConcreteTableAsync();
 
             Bft3Lst = await MaterialServices.GetBSFiberBetonAsync();
 
             BftnLst = await MaterialServices.GetFiberBftAsync();
 
-            BfnLst = await MaterialServices.GetBetonDataAsync(0);
-
-            m_RebarDiameters = await MaterialServices.GetRebarDiametersAsync();
-
-            m_Rebar = await MaterialServices.GetRebarAsync();
+            BfnLst = await MaterialServices.GetBetonDataAsync(0);                       
         }
 
         private void SelectedFiberBetonValues(string fib_i, string bft3n, ref double numRfbt3n, ref double numRfbt2n)

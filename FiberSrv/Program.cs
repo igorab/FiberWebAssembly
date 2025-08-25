@@ -1,5 +1,5 @@
 using FiberSrv.Components;
-using FiberSrv.Data;
+using FiberSrv.Repositories;
 using System.Data.Entity.Spatial;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +13,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddSingleton<CalcRepository>(sp => new CalcRepository(connectionString??""));
+
+builder.Services.AddSingleton<MaterialRepository>(sp => new MaterialRepository(connectionString ?? ""));
 
 var app = builder.Build();
 

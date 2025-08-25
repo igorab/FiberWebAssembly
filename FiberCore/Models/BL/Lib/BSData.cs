@@ -48,10 +48,18 @@ namespace BSFiberCore.Models.BL.Lib
         /// <param name="id"></param>
         /// <returns>Строка подключения</returns>
         public static string  LoadConnectionString()
-        {            
-            string? s = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigId]?.ConnectionString;
-            if (string.IsNullOrEmpty(s))
-                s = connectionString;
+        {
+            string? s;
+            try
+            {
+                s = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigId]?.ConnectionString;
+                if (string.IsNullOrEmpty(s))
+                    s = connectionString;
+            }
+            catch (Exception ex) 
+            {
+                s = "";
+            }
             return s;
         }
 
@@ -208,8 +216,9 @@ namespace BSFiberCore.Models.BL.Lib
             {
                 using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
                 {
-                    var output = cnn.Query<Beton>($"select * from Beton where BetonType = {_betonTypeId}", new DynamicParameters());
-                    return output.ToList();
+                    IEnumerable<Beton> output = cnn.Query<Beton>($"select * from Beton where BetonType = {_betonTypeId}", new DynamicParameters());
+                    List<Beton> res = output.ToList();
+                    return res;
                 }
             }
             catch (Exception _e)

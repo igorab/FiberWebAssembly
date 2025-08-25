@@ -1,12 +1,5 @@
-﻿using System.Data;
-using System;
-using System.Configuration;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using BSFiberCore.Models.BL.Beam;
+﻿using BSFiberCore.Models.BL.Beam;
 using Dapper;
-using System.Linq;
 using System.Data.SQLite;
 using BSFiberCore.Models.BL.Lib;
 
@@ -852,21 +845,7 @@ public class BSData
         }
     }
 
-    public static List<RebarDiameters> LoadRebarDiameters()
-    {
-        try
-        {
-            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<RebarDiameters>("select * from RebarDiameters", new RebarDiameters());
-                return output.ToList();
-            }
-        }
-        catch
-        {
-            return new List<RebarDiameters>();
-        }
-    }
+    
 
     /// <summary>
     /// Выборка арматуры

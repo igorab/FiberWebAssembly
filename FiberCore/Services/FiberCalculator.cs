@@ -122,6 +122,7 @@ public class FiberCalculator
 
         bool use_reinforcement = As > 0 || A1s > 0;
         BSFiberMain fiberMain = FiberMain(use_reinforcement);
+        fiberMain.SelectMaterialFromList();
 
         double[] prms = { Yft, Yb, Yb1, Yb2, Yb3, Yb5 };
 
@@ -204,9 +205,11 @@ public class FiberCalculator
         };
 
         fiberMain.InitSize();
+
+        //fiberMain.InitMaterialsAsync();
+
         fiberMain.InitMaterials();
-        fiberMain.SelectMaterialFromList();
-        
+                
         return fiberMain;
     }
 
@@ -215,7 +218,8 @@ public class FiberCalculator
         try
         {
             BSFiberMain fiberMain = FiberMain(false);
-            
+            fiberMain.SelectMaterialFromList();
+
             BSSectionChart SectionChart = new BSSectionChart();
 
             List<BSCalcResultNDM> calcResults = new List<BSCalcResultNDM>();

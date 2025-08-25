@@ -1,10 +1,9 @@
 ﻿using Dapper;
+using FiberSrv.Data;
 using Microsoft.Data.Sqlite;
-using System.Collections.Generic;
 using System.Data;
-using System.Threading.Tasks;
 
-namespace FiberSrv.Data;
+namespace FiberSrv.Repositories;
 
 public class CalcRepository
 {

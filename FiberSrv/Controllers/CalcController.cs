@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BSFiberCore.Models.BL.Lib;
 using FiberSrv.Data;
+using FiberSrv.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,9 +13,12 @@ public class CalcController : ControllerBase
 {
     private readonly CalcRepository _repository;
 
-    public CalcController(CalcRepository repository)
+    private readonly MaterialRepository _materialRepository;
+
+    public CalcController(CalcRepository repository, MaterialRepository materialRepository)
     {
         _repository = repository;
+        _materialRepository = materialRepository;
     }
 
     [HttpGet("check-connection")]
@@ -29,6 +34,13 @@ public class CalcController : ControllerBase
             return StatusCode(500, "Не удалось установить соединение с базой данных.");
         }
     }
+
+    [HttpGet("rebar/diameters")]
+    public async Task<List<RebarDiameters>?> GetRebarDiametersAsync()
+    {       
+        return await _materialRepository.LoadRebarDiameters();
+    }
+
 
 
     [HttpGet]
