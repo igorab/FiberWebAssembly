@@ -18,6 +18,19 @@ builder.Services.AddSingleton<CalcRepository>(sp => new CalcRepository(connectio
 
 builder.Services.AddSingleton<MaterialRepository>(sp => new MaterialRepository(connectionString ?? ""));
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowWebAssembly",
+        builder =>
+        {
+            builder.WithOrigins("https://localhost:7136")
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,6 +44,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseCors("AllowWebAssembly");
+
 app.MapControllers(); // Регистрация маршрутов для контроллеров
 
 app.UseAntiforgery();
