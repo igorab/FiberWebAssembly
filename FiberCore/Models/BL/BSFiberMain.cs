@@ -218,18 +218,21 @@ namespace BSFiberCore.Models.BL
         /// </summary>
         public void InitMaterials()
         {
-            m_RebarDiameters =  MaterialServices.GetRebarDiametersAsync().Result;
-            //m_RebarDiameters = BSData.LoadRebarDiameters();
+            MaterialServices.httpClient = new HttpClient();
 
-            m_Rebar = BSData.LoadRebar();
+            //List<RebarDiameters>? res = Task.Run(() => MaterialServices.GetRebarDiametersAsync()).Result;
 
-            FiberConcrete = BSData.LoadFiberConcreteTable();
+            //m_RebarDiameters = MaterialServices.GetRebarDiameters();
 
-            Bft3Lst = BSQuery.LoadBSFiberBeton();
+            //m_Rebar = BSData.LoadRebar();
 
-            BftnLst = BSData.LoadFiberBft();
+            //FiberConcrete = BSData.LoadFiberConcreteTable();
 
-            BfnLst = BSData.LoadBetonData(0);
+            //Bft3Lst = BSQuery.LoadBSFiberBeton();
+
+            //BftnLst = BSData.LoadFiberBft();
+
+            //BfnLst = BSData.LoadBetonData(0);
 
             return  ;
         }

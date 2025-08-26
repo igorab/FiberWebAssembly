@@ -1,8 +1,10 @@
 ﻿@page "/Calculator"
+@using BSFiberCore.Models.BL.Lib
 @using FiberCore.Services
 @inject FiberCalculator fibcalc
 @inject FibercalcState calcState
 @inject NavigationManager Navigation
+@inject HttpClient Http
 
 <head>
     <link href="css/fib.css" rel="stylesheet" />
@@ -262,6 +264,19 @@
 </form>
 
 @code {
+
+    private List<RebarDiameters> Diameters { get; set; } = new List<RebarDiameters>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        MaterialServices.httpClient = Http;
+        Diameters = await MaterialServices.GetRebarDiametersAsync();
+
+        await fibcalc.fiberMain.InitMaterialsAsync();
+
+        await Task.Delay(10);
+    }
+
 
     private void OnCalculationTypeChanged(ChangeEventArgs e)
     {

@@ -17,7 +17,9 @@ namespace FiberCore.Services;
 public class FiberCalculator
 {
     #region userparams
-    
+
+    public BSFiberMain fiberMain { get; set; }
+
     public int Id { get; set; }
     public int CalcType { get; set; } // 0 -static_eq 1 - ndm 
     public string FiberQ { get; set; }        
@@ -98,8 +100,10 @@ public class FiberCalculator
     #endregion
  
     public FiberCalculator()
-    {       
-        //Efb = 2141404.0200;            
+    {
+        //Efb = 2141404.0200;
+        //
+        fiberMain = new BSFiberMain();
     }
 
     /// <summary>
@@ -121,7 +125,7 @@ public class FiberCalculator
         List<BSFiberReportData> calcResults_MNQ = new List<BSFiberReportData>();
 
         bool use_reinforcement = As > 0 || A1s > 0;
-        BSFiberMain fiberMain = FiberMain(use_reinforcement);
+        InitFiberMain(use_reinforcement);
         fiberMain.SelectMaterialFromList();
 
         double[] prms = { Yft, Yb, Yb1, Yb2, Yb3, Yb5 };
@@ -195,20 +199,17 @@ public class FiberCalculator
         return htmlcontent;
     }
 
-    private BSFiberMain FiberMain(bool use_reinforcement)
+    private BSFiberMain InitFiberMain(bool use_reinforcement)
     {
-        BSFiberMain fiberMain = new BSFiberMain()
-        {
-            UseReinforcement = use_reinforcement,
-            BeamSection = (BeamSection)SectionType,
-            Fiber = this
-        };
-
+        fiberMain.UseReinforcement = use_reinforcement;
+        fiberMain.BeamSection = (BeamSection)SectionType;
+        fiberMain.Fiber = this;
+        
         fiberMain.InitSize();
 
         //fiberMain.InitMaterialsAsync();
 
-        fiberMain.InitMaterials();
+        //fiberMain.InitMaterials();
                 
         return fiberMain;
     }
@@ -217,7 +218,8 @@ public class FiberCalculator
     {
         try
         {
-            BSFiberMain fiberMain = FiberMain(false);
+            InitFiberMain(false);
+
             fiberMain.SelectMaterialFromList();
 
             BSSectionChart SectionChart = new BSSectionChart();
