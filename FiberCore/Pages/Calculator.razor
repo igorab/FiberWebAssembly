@@ -269,10 +269,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        MaterialServices.httpClient = Http;
-        Diameters = await MaterialServices.GetRebarDiametersAsync();
+        //MaterialServices.httpClient = Http;
+        //Diameters = await MaterialServices.GetRebarDiametersAsync();
 
-        await fibcalc.fiberMain.InitMaterialsAsync();
+        await fibcalc.fiberMain.InitMaterialsAsync(Http);
 
         await Task.Delay(10);
     }

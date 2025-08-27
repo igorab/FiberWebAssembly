@@ -237,8 +237,10 @@ namespace BSFiberCore.Models.BL
             return  ;
         }
 
-        public async Task InitMaterialsAsync()
+        public async Task InitMaterialsAsync(HttpClient? http = null )
         {
+            MaterialServices.httpClient = (http != null)? http : new HttpClient();
+
             m_RebarDiameters = await MaterialServices.GetRebarDiametersAsync();
             
             m_Rebar = await MaterialServices.GetRebarAsync();

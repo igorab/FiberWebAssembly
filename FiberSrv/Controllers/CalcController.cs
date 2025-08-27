@@ -41,6 +41,32 @@ public class CalcController : ControllerBase
         return await _materialRepository.LoadRebarDiameters();
     }
 
+    [HttpGet("FiberConcreteTable")]
+    public async Task<List<RebarDiameters>?> GetFiberConcreteTableAsync()
+    {
+        return await _materialRepository.LoadRebarDiameters();
+    }
+
+    [HttpGet("rebar")]
+    public async Task<List<Rebar>> LoadRebarAsync()
+    {
+        return await _materialRepository.LoadRebar();
+    }
+
+    public async Task<List<BSFiberBeton>> LoadBSFiberBetonAsync()
+    {
+        return await _materialRepository.LoadBSFiberBeton();
+    }
+
+    public async Task<List<FiberBft>> LoadFiberBftAsync()
+    {
+        return await _materialRepository.LoadFiberBft();
+    }
+
+    public async Task<List<Beton>> LoadBetonDataAsync(int _betonTypeId)
+    {
+        return await _materialRepository.LoadBetonData(_betonTypeId);
+    }
 
 
     [HttpGet]

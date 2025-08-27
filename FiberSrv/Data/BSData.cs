@@ -252,25 +252,7 @@ public class BSData
         }
     }
 
-    /// <summary>
-    /// Тип арматуры
-    /// </summary>
-    /// <returns></returns>
-    public static List<Rebar> LoadRebar()
-    {
-        try
-        {
-            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<Rebar>("select * from Rebar", new DynamicParameters());
-                return output.ToList();
-            }
-        }
-        catch
-        {
-            return new List<Rebar>();
-        }
-    }
+   
 
     /// <summary>
     /// Армирование
@@ -466,34 +448,7 @@ public class BSData
         }
     }
 
-
-    /// <summary>
-    /// Данные по фибробетону из БД
-    /// </summary>
-    /// <returns></returns>
-    public static List<Elements> LoadFiberConcreteTable(string _iB = "")
-    {
-        try
-        {
-            using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                string query;
-                if (_iB == "")
-                    query = "select * from FiberConcrete";
-                else
-                    query = string.Format("select * from FiberConcrete where i_B = '{0}'", _iB);
-
-                IEnumerable<Elements> output = cnn.Query<Elements>(query, new DynamicParameters());
-                return output.ToList();
-            }
-        }
-        catch (Exception _e)
-        {
-            MessageBox.Show(_e.Message);
-            return new List<Elements>();
-        }
-    }
-
+    
     public static List<FiberConcreteClass> LoadFiberConcreteClass()
     {
         try
