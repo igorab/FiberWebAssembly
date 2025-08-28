@@ -9,6 +9,7 @@ using BSFiberCore.Models.BL.Sec;
 using BSFiberCore.Models.BL.Tri;
 using BSFiberCore.Models.BL.Uom;
 using FiberCore.Services;
+using MathNet.Numerics.Distributions;
 using System.Data;
 using System.Drawing;
 
@@ -30,12 +31,12 @@ namespace BSFiberCore.Models.BL
         public Rebar? Rebar { get; internal set; }
         public List<string> m_Message { get; private set; }
         public Dictionary<string, double> m_CalcResults2Group { get; private set; }
-        private List<Elements> FiberConcrete { get; set; }
-        private List<BSFiberBeton> Bft3Lst { get; set; }
-        private List<FiberBft> BftnLst { get; set; }
-        private List<Beton> BfnLst { get; set; }
-        private List<Rebar>? m_Rebar { get; set; }
-        private List<RebarDiameters>? m_RebarDiameters { get; set; }
+        public List<Elements> FiberConcrete { private get; set; }
+        public List<BSFiberBeton> Bft3Lst {private get; set; }
+        public List<FiberBft> BftnLst {private get; set; }
+        public List<Beton> BfnLst { private get; set; }
+        public List<Rebar>? m_Rebar {private  get; set; }
+        public List<RebarDiameters>? m_RebarDiameters {private  get; set; }
 
         BSSectionChart SectionChart;
 
@@ -213,30 +214,7 @@ namespace BSFiberCore.Models.BL
             sz = BeamWidtHeight(out double w, out double h, out double area);
         }
 
-        /// <summary>
-        /// списки свойств материалов
-        /// </summary>
-        public void InitMaterials()
-        {
-            MaterialServices.httpClient = new HttpClient();
-
-            //List<RebarDiameters>? res = Task.Run(() => MaterialServices.GetRebarDiametersAsync()).Result;
-
-            //m_RebarDiameters = MaterialServices.GetRebarDiameters();
-
-            //m_Rebar = BSData.LoadRebar();
-
-            //FiberConcrete = BSData.LoadFiberConcreteTable();
-
-            //Bft3Lst = BSQuery.LoadBSFiberBeton();
-
-            //BftnLst = BSData.LoadFiberBft();
-
-            //BfnLst = BSData.LoadBetonData(0);
-
-            return  ;
-        }
-
+        
         public async Task InitMaterialsAsync(HttpClient? http = null )
         {
             MaterialServices.httpClient = (http != null)? http : new HttpClient();
@@ -253,19 +231,19 @@ namespace BSFiberCore.Models.BL
 
             BfnLst = await MaterialServices.GetBetonDataAsync(0);                       
         }
-
+       
         private void SelectedFiberBetonValues(string fib_i, string bft3n, ref double numRfbt3n, ref double numRfbt2n)
-        {
+        {            
             try
-            {
-                var b_i = Convert.ToString(fib_i);
-                BSFiberBeton? beton = Bft3Lst.FirstOrDefault(fbt => fbt.Name == bft3n);
+            {                
+                var beton = Bft3Lst.FirstOrDefault(fbt => fbt.Name == bft3n);
                 if (beton == null)
                     return;
 
-                string btName = beton.Name.Replace("i", b_i);
+                var bet_name = beton.Name;
+                bet_name = bet_name.Replace("i", fib_i);
 
-                var getQuery = FiberConcrete.Where(f => f.BT == btName);
+                var getQuery = FiberConcrete.Where(f => f.BT == bet_name);
                 if (getQuery?.Count() > 0)
                 {
                     Elements? fib = getQuery?.First();
@@ -273,8 +251,13 @@ namespace BSFiberCore.Models.BL
                     numRfbt3n = BSHelper.MPA2kgsm2(fib?.Rfbt3n);
                     numRfbt2n = BSHelper.MPA2kgsm2(fib?.Rfbt2n);
                 }
+                else
+                {
+                    numRfbt3n = 0;
+                    numRfbt2n = 0;
+                }
             }
-            catch
+            catch (Exception ex) 
             {
                 numRfbt3n = 0;
                 numRfbt2n = 0;
@@ -317,7 +300,8 @@ namespace BSFiberCore.Models.BL
 
                     if (string.IsNullOrEmpty(betonClass)) return;
 
-                    Beton bt = BSQuery.HeavyBetonTableFind(betonClass, _betonTypeId);
+                    Beton bt = new Beton();
+                    bt = Task.Run(async () => bt = await MaterialServices.HeavyBetonTableFindAsync(betonClass, _betonTypeId) ).Result;
 
                     if (bt.Rbn != 0)
                         numRfb_n = BSHelper.MPA2kgsm2(bt.Rbn);
@@ -357,7 +341,10 @@ namespace BSFiberCore.Models.BL
             double Eb = 0;
             double Bclass = 0;
 
-            SelectedFiberBetonValues(Fiber.BetonIndex, Fiber.Bft3, ref rfbt3n, ref rfbt2n);
+            var beton_index = Fiber.BetonIndex;
+            var b_ft3 = Fiber.Bft3;
+            
+            SelectedFiberBetonValues(beton_index, b_ft3, ref rfbt3n, ref rfbt2n);
 
             BftnSelectedValue(Fiber.Bft, ref rfbtn);
 

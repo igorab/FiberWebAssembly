@@ -70,8 +70,6 @@ namespace BSFiberCore.Models.BL.Lib
             return bt;
         }
 
-
-
         /// <summary>
         /// Найти строку из таблицы ТЯЖЕЛОГО бетона
         /// </summary>

@@ -258,37 +258,67 @@
     <input asp-for="a1_cm" type="number" step="0.01" @bind="fibcalc.a1_cm" />
     </div>
 </div>
-
 <br>
-<button type="submit" @onclick = "Calculate"> Выполнить расчет </button>
+    <button @onclick = "CalculateAsync"> Выполнить расчет </button>
 </form>
 
 @code {
 
-    private List<RebarDiameters> Diameters { get; set; } = new List<RebarDiameters>();
+    public Calculator()
+    {
 
+    }
+
+    public async Task InitMaterialsAsync(HttpClient? http = null)
+    {
+        MaterialServices.httpClient = (http != null) ? http : new HttpClient();
+
+        var RebarDiameters = await MaterialServices.GetRebarDiametersAsync();
+
+        var Rebar = await MaterialServices.GetRebarAsync();
+
+        var FiberConcrete = await MaterialServices.GetFiberConcreteTableAsync();
+
+        var Bft3Lst = await MaterialServices.GetBSFiberBetonAsync();
+
+        var BftnLst = await MaterialServices.GetFiberBftAsync();
+
+        var BfnLst = await MaterialServices.GetBetonDataAsync(0);
+
+        var xxx = await MaterialServices.HeavyBetonTableFindAsync("B30");
+
+        fibcalc.fiberMain.m_RebarDiameters = RebarDiameters;
+        fibcalc.fiberMain.m_Rebar = Rebar;
+        fibcalc.fiberMain.FiberConcrete = FiberConcrete;
+        fibcalc.fiberMain.Bft3Lst = Bft3Lst;
+        fibcalc.fiberMain.BftnLst = BftnLst;
+        fibcalc.fiberMain.BfnLst = BfnLst;
+    }
+
+ 
     protected override async Task OnInitializedAsync()
     {
-        //MaterialServices.httpClient = Http;
-        //Diameters = await MaterialServices.GetRebarDiametersAsync();
-
-        await fibcalc.fiberMain.InitMaterialsAsync(Http);
+        fibcalc.CalcType = 0; // Default to "по предельным усилиям"
+        fibcalc.SectionType = 4; // Default to "Прямоугольное"
+        
+        await InitMaterialsAsync(Http);
 
         await Task.Delay(10);
     }
 
-
+    // Обновляем переменную на основе выбранного значения
     private void OnCalculationTypeChanged(ChangeEventArgs e)
     {
-        fibcalc.CalcType = int.Parse(e.Value.ToString()); // Обновляем переменную на основе выбранного значения
+        fibcalc.CalcType = int.Parse(e.Value.ToString()); 
     }
 
+    // Обновляем переменную на основе выбранного значения
     private void OnSectionTypeChanged(ChangeEventArgs e)
     {
-        fibcalc.SectionType = int.Parse(e.Value.ToString()); // Обновляем переменную на основе выбранного значения
+        fibcalc.SectionType = int.Parse(e.Value.ToString()); 
     }
 
-    private void Calculate()
+    private async Task CalculateAsync()
     {        
         calcState.HtmlResult = fibcalc.RunCalc();
 

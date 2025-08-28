@@ -150,6 +150,34 @@ namespace FiberSrv.Repositories
             }
         }
 
+        /// <summary>
+        /// Найти строку из таблицы ТЯЖЕЛОГО бетона
+        /// </summary>
+        /// <param name="_BetonClass">Класс бетона</param>
+        /// /// <param name="_betonTypeId">"Тип: тяжелый, мелкозернистый А, Б"</param>
+        /// <returns></returns>
+        public async Task<Beton> HeavyBetonTableFind(string _BetonClass, int _betonTypeId = 0)
+        {
+            Beton bt = new Beton();
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                {
+                    await cnn.OpenAsync();
+                    string query = $"select * from Beton where BetonType = {_betonTypeId} AND BT = '{_BetonClass}'";
+                    var output = cnn.Query<Beton>(query, new DynamicParameters());
+                    if (output.Count() > 0)
+                        bt = output.ToList()[0];
+                }
+            }
+            catch (Exception _e)
+            {
+                MessageBox.Show(_e.Message);
+                return new Beton();
+            }
+
+            return bt;
+        }
 
     }
 }

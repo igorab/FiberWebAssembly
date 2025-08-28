@@ -1,7 +1,9 @@
-﻿using Dapper;
+﻿using BSFiberCore.Models.BL.Lib;
+using Dapper;
 using FiberSrv.Data;
 using Microsoft.Data.Sqlite;
 using System.Data;
+using System.Data.SQLite;
 
 namespace FiberSrv.Repositories;
 
@@ -51,5 +53,5 @@ public class CalcRepository
             var sqlQuery = "INSERT INTO CalcParameters (Length, Width, Name) VALUES (@Length, @Width, @Name)";
             await dbConnection.ExecuteAsync(sqlQuery, parameter);
         }
-    }
+    }    
 }

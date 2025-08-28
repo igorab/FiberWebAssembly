@@ -35,47 +35,56 @@ public class CalcController : ControllerBase
         }
     }
 
-    [HttpGet("rebar/diameters")]
+    [HttpGet("RebarDiameters")]
     public async Task<List<RebarDiameters>?> GetRebarDiametersAsync()
     {       
         return await _materialRepository.LoadRebarDiameters();
     }
 
     [HttpGet("FiberConcreteTable")]
-    public async Task<List<RebarDiameters>?> GetFiberConcreteTableAsync()
+    public async Task<List<Elements>?> GetFiberConcreteTableAsync()
     {
-        return await _materialRepository.LoadRebarDiameters();
+        return await _materialRepository.LoadFiberConcreteTable();
     }
 
-    [HttpGet("rebar")]
+    [HttpGet("Rebar")]
     public async Task<List<Rebar>> LoadRebarAsync()
     {
         return await _materialRepository.LoadRebar();
     }
 
+    [HttpGet("BSFiberBeton")]
     public async Task<List<BSFiberBeton>> LoadBSFiberBetonAsync()
     {
         return await _materialRepository.LoadBSFiberBeton();
     }
 
+    [HttpGet("FiberBft")]
     public async Task<List<FiberBft>> LoadFiberBftAsync()
     {
         return await _materialRepository.LoadFiberBft();
     }
 
+    [HttpGet("BetonData")]
     public async Task<List<Beton>> LoadBetonDataAsync(int _betonTypeId)
     {
-        return await _materialRepository.LoadBetonData(_betonTypeId);
+        return await _materialRepository.LoadBetonData(_betonTypeId);    
+    }
+
+    [HttpGet("HeavyBetonTable")]
+    public async Task<Beton> HeavyBetonTableFindAsync(string betonClass, int betonTypeId = 0)
+    {
+        return await _materialRepository.HeavyBetonTableFind(betonClass,  betonTypeId);
     }
 
 
-    [HttpGet]
+    [HttpGet("CalcParameters")]
     public async Task<IEnumerable<CalcParameters>> Get()
     {
         return await _repository.GetCalcParametersAsync();
     }
 
-    [HttpPost]
+    [HttpPost("CalcParameter")]
     public async Task<IActionResult> Post([FromBody] CalcParameters parameters)
     {
         await _repository.AddCalcParameterAsync(parameters);
