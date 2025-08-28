@@ -213,25 +213,7 @@ namespace BSFiberCore.Models.BL
         {
             sz = BeamWidtHeight(out double w, out double h, out double area);
         }
-
-        
-        public async Task InitMaterialsAsync(HttpClient? http = null )
-        {
-            MaterialServices.httpClient = (http != null)? http : new HttpClient();
-
-            m_RebarDiameters = await MaterialServices.GetRebarDiametersAsync();
-            
-            m_Rebar = await MaterialServices.GetRebarAsync();
-
-            FiberConcrete = await MaterialServices.GetFiberConcreteTableAsync();
-
-            Bft3Lst = await MaterialServices.GetBSFiberBetonAsync();
-
-            BftnLst = await MaterialServices.GetFiberBftAsync();
-
-            BfnLst = await MaterialServices.GetBetonDataAsync(0);                       
-        }
-       
+                       
         private void SelectedFiberBetonValues(string fib_i, string bft3n, ref double numRfbt3n, ref double numRfbt2n)
         {            
             try
@@ -286,9 +268,11 @@ namespace BSFiberCore.Models.BL
         /// <param name="_airHumidityId">влажность</param>
         /// <param name="numRfb_n"></param>
         /// <param name="numE_beton"></param>
-        /// <param name="B_class"></param>
-        private void BfnSelectedValue(string bf_n, int _betonTypeId, int _airHumidityId, ref double numRfb_n, ref double numE_beton, ref double B_class)
+        /// <param name="B_class">класс бетона</param>
+        private async Task<(double numRfb_n, double numE_beton, double B_class)>  BfnSelectedValue(string bf_n, int _betonTypeId, int _airHumidityId)
         {
+            double numRfb_n = 0, numE_beton = 0, B_class =  0;
+
             try
             {                                
                 Beton? bfn = BfnLst.FirstOrDefault(bfn => bfn.BT == bf_n);
@@ -298,10 +282,10 @@ namespace BSFiberCore.Models.BL
                     string betonClass = Convert.ToString(bfn.BT);
                     B_class = bfn.B;
 
-                    if (string.IsNullOrEmpty(betonClass)) return;
+                    if (string.IsNullOrEmpty(betonClass)) return (0,0,0);
 
                     Beton bt = new Beton();
-                    bt = Task.Run(async () => bt = await MaterialServices.HeavyBetonTableFindAsync(betonClass, _betonTypeId) ).Result;
+                    bt = await MaterialServices.HeavyBetonTableFindAsync(betonClass, _betonTypeId);
 
                     if (bt.Rbn != 0)
                         numRfb_n = BSHelper.MPA2kgsm2(bt.Rbn);
@@ -328,12 +312,14 @@ namespace BSFiberCore.Models.BL
                 numE_beton = 0;
                 B_class = 0;
             }
+
+            return (numRfb_n, numE_beton, B_class);
         }
 
         /// <summary>
         ///  классы материала
         /// </summary>
-        public void SelectMaterialFromList()
+        public async Task SelectMaterialFromList()
         {                                 
             double rfbt3n = 0, rfbt2n = 0;
             double rfbtn  = 0;
@@ -348,7 +334,7 @@ namespace BSFiberCore.Models.BL
 
             BftnSelectedValue(Fiber.Bft, ref rfbtn);
 
-            BfnSelectedValue(Fiber.Bfb, 0, 1, ref rfbn, ref Eb, ref Bclass);
+            (rfbn, Eb, Bclass) = await BfnSelectedValue(Fiber.Bfb, 0, 1);
             
             MatFiber = new BSMatFiber(Fiber.Ef, Fiber.mu_fv, Fiber.Efbt, Fiber.Eb, Fiber.Yft, Fiber.Yb, Fiber.Yb1, Fiber.Yb2, Fiber.Yb3, Fiber.Yb5)
             {

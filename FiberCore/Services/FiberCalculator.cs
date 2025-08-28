@@ -113,14 +113,18 @@ public class FiberCalculator
     public string RunCalc()
     {
         if (CalcType == 0)
+        {
             return RunCalcStaticEq();
+        }
         else if (CalcType == 1)
+        {
             return RunCalcNDM();
+        }
         else
             return "";
     }
 
-    private string RunCalcStaticEq()
+    private  string RunCalcStaticEq()
     {
         List<BSFiberReportData> calcResults_MNQ = new List<BSFiberReportData>();
 
