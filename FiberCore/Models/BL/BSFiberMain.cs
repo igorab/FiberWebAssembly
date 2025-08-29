@@ -87,7 +87,7 @@ namespace BSFiberCore.Models.BL
             }
             else if (BeamSection == BeamSection.Ring)
             {
-                sz = new double[] { r2, r1, _length };
+                sz = new double[] { r1, r2, _length };
             }
 
             return sz;
