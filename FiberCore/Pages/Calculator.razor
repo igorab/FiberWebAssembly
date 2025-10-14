@@ -320,7 +320,7 @@
 
     private async Task CalculateAsync()
     {        
-        calcState.HtmlResult = fibcalc.RunCalc();
+        calcState.HtmlResult = await fibcalc.RunCalc();
 
         Navigation.NavigateTo($"/CalculationResult?SectionType={fibcalc.SectionType}&CalcType={fibcalc.CalcType}");
 

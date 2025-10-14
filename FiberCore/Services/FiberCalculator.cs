@@ -6,6 +6,7 @@ using BSFiberCore.Models.BL.Ndm;
 using BSFiberCore.Models.BL.Rep;
 using BSFiberCore.Models.BL.Sec;
 using BSFiberCore.Models.BL.Tri;
+using System.Threading.Tasks;
 using TriangleNet.Geometry;
 
 namespace FiberCore.Services;
@@ -110,21 +111,21 @@ public class FiberCalculator
     /// Runs the calculation based on the selected calculation type.
     /// </summary>
     /// <returns>HTML content of the calculation report.</returns>
-    public string RunCalc()
+    public async Task<string> RunCalc()
     {
         if (CalcType == 0)
         {
-            return RunCalcStaticEq();
+            return await RunCalcStaticEqAsync();
         }
         else if (CalcType == 1)
         {
-            return RunCalcNDM();
+            return await RunCalcNDMAsync();
         }
         else
-            return "";
+            return "Не выбран тип расчета";
     }
 
-    private  string RunCalcStaticEq()
+    private  async Task<string> RunCalcStaticEqAsync()
     {
         List<BSFiberReportData> calcResults_MNQ = new List<BSFiberReportData>();
 
@@ -132,7 +133,8 @@ public class FiberCalculator
 
         InitFiberMain(use_reinforcement);
 
-        fiberMain.SelectMaterialFromList();
+        Task task = fiberMain.SelectMaterialFromList();
+        await task;
 
         double[] prms = { Yft, Yb, Yb1, Yb2, Yb3, Yb5 };
 
@@ -216,13 +218,13 @@ public class FiberCalculator
         return fiberMain;
     }
 
-    public string RunCalcNDM()
+    public async Task<string?> RunCalcNDMAsync()
     {
         try
         {
             InitFiberMain(false);
 
-            fiberMain.SelectMaterialFromList();
+            await fiberMain.SelectMaterialFromList();
 
             BSSectionChart SectionChart = new BSSectionChart();
 
