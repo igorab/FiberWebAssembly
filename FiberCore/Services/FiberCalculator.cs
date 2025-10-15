@@ -6,6 +6,7 @@ using BSFiberCore.Models.BL.Ndm;
 using BSFiberCore.Models.BL.Rep;
 using BSFiberCore.Models.BL.Sec;
 using BSFiberCore.Models.BL.Tri;
+using System.Security.AccessControl;
 using System.Threading.Tasks;
 using TriangleNet.Geometry;
 
@@ -113,28 +114,49 @@ public class FiberCalculator
     /// <returns>HTML content of the calculation report.</returns>
     public async Task<string> RunCalc()
     {
+        Task<bool> calc;
+        string htmlContent = "No results";
+
         if (CalcType == 0)
         {
-            return await RunCalcStaticEqAsync();
+            calc = RunCalcStaticEqAsync();
+            bool ok = await calc;
+            if (ok)
+            {
+                // расчет по наклонной полосе на действие момента [6.1.7]
+                htmlContent = BSFiberReport_M.RunMultiReport(calcResults_MNQ);
+                return htmlContent;
+            }
         }
         else if (CalcType == 1)
         {
-            return await RunCalcNDMAsync();
+            calc = RunCalcNDMAsync();
+            bool ok = await calc;
+
+            if (ok)
+            {
+                fiberMain.CreatePictureForBodyReport(calcResultsNdm);
+                // формирование отчета
+                htmlContent = BSReport.RunReport((BeamSection)SectionType, calcResultsNdm);
+            }
         }
-        else
-            return "Не выбран тип расчета";
+        
+        return htmlContent;                
     }
 
-    private  async Task<string> RunCalcStaticEqAsync()
-    {
-        List<BSFiberReportData> calcResults_MNQ = new List<BSFiberReportData>();
 
+    public List<BSFiberReportData> calcResults_MNQ { get; private set; }
+
+    /// <summary>
+    /// статический расчет
+    /// </summary>
+    /// <returns></returns>
+    private  async Task<bool> RunCalcStaticEqAsync()
+    {        
         bool use_reinforcement = As > 0 || A1s > 0;
+        await InitFiberMain(use_reinforcement);
 
-        InitFiberMain(use_reinforcement);
-
-        Task task = fiberMain.SelectMaterialFromList();
-        await task;
+        calcResults_MNQ = new List<BSFiberReportData>();
 
         double[] prms = { Yft, Yb, Yb1, Yb2, Yb3, Yb5 };
 
@@ -199,90 +221,85 @@ public class FiberCalculator
             var report = BSFiberReport_MNQ.FiberReport_Qc(fiberCalc_Qc, ++iRep);
 
             calcResults_MNQ.Add(report.GetBSFiberReportData());
-
         }
 
-        // расчет по наклонной полосе на действие момента [6.1.7]
-        string htmlcontent = BSFiberReport_M.RunMultiReport(calcResults_MNQ);
-        return htmlcontent;
+        return calcResults_MNQ.Count > 0;
     }
 
-    private BSFiberMain InitFiberMain(bool use_reinforcement)
+    /// <summary>
+    /// Init materials
+    /// </summary>
+    /// <param name="use_reinforcement"></param>
+    /// <returns></returns>
+    private async Task InitFiberMain(bool use_reinforcement)
     {
         fiberMain.UseReinforcement = use_reinforcement;
         fiberMain.BeamSection = (BeamSection)SectionType;
         fiberMain.Fiber = this;
         
         fiberMain.InitSize();
-        
-        return fiberMain;
+
+        await fiberMain.SelectMaterialFromList();
     }
 
-    public async Task<string?> RunCalcNDMAsync()
+    public List<BSCalcResultNDM> calcResultsNdm { get; private set; }
+
+    public async Task<bool> RunCalcNDMAsync()
     {
         try
         {
-            InitFiberMain(false);
-
-            await fiberMain.SelectMaterialFromList();
-
+            await InitFiberMain(false);
+            
             BSSectionChart SectionChart = new BSSectionChart();
 
-            List<BSCalcResultNDM> calcResults = new List<BSCalcResultNDM>();
+            calcResultsNdm = new List<BSCalcResultNDM>();
 
             GetEffortsFromForm(out List<Dictionary<string, double>> lstMNQ);
 
             if (!ValidateNDMCalc(lstMNQ))
-                return "Err";
+                return false;
 
             var beamSection = (BeamSection)SectionType;
             foreach (Dictionary<string, double> efforts in lstMNQ)
             {
                 fiberMain.MNQ = efforts;
-
-                Point CG = new Point(0, 0);
+                
                 BSCalcResultNDM calcRes = null;
                
-                if (beamSection == BeamSection.Rect)
-                {
-                    calcRes = fiberMain.CalcNDM(BeamSection.Rect);
-                }
-                else if (BSHelper.IsITL(beamSection))
+                if (beamSection == BeamSection.Rect || BSHelper.IsITL(beamSection))
                 {
                     calcRes = fiberMain.CalcNDM(beamSection);
-                }
+                }                
                 else if (beamSection == BeamSection.Ring)
                 {
+                    Point CG = new Point(0, 0);
                     fiberMain.GenerateMesh(ref CG);
-                    calcRes = fiberMain.CalcNDM(BeamSection.Ring);
+                    calcRes = fiberMain.CalcNDM(beamSection);
                 }
                 else if (beamSection == BeamSection.Any)
                 {
                     MeshSectionSettings meshSettings = new MeshSectionSettings();
                     SectionChart.GenerateMesh(meshSettings.MaxArea);
 
-                    calcRes = fiberMain.CalcNDM(BeamSection.Any);
+                    calcRes = fiberMain.CalcNDM(beamSection);
                 }
 
                 if (calcRes != null)
                 {
                     //calcRes.ImageStream = m_SectionChart.GetImageStream;
-                    calcResults.Add(calcRes);
+                    calcResultsNdm.Add(calcRes);
                 }
             }
 
+            return calcResultsNdm.Count > 0;
             //CreatePictureForHeaderReport(calcResults);
-            fiberMain.CreatePictureForBodyReport(calcResults);
-
-            // формирование отчета
-            string html = BSReport.RunReport(beamSection, calcResults);
-
-            return html;
-
+            
+            
         }
         catch (Exception _e)
         {
-            return MessageBox.Show(_e.Message);
+            MessageBox.Show(_e.Message);
+            return false;
         }            
     }
             
