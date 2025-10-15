@@ -239,8 +239,9 @@ namespace BSFiberCore.Models.BL
                     numRfbt2n = 0;
                 }
             }
-            catch (Exception ex) 
+            catch (Exception _e) 
             {
+                Console.WriteLine(_e.Message);
                 numRfbt3n = 0;
                 numRfbt2n = 0;
             }

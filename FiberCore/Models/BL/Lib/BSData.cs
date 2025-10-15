@@ -56,8 +56,9 @@ namespace BSFiberCore.Models.BL.Lib
                 if (string.IsNullOrEmpty(s))
                     s = connectionString;
             }
-            catch (Exception ex) 
+            catch (Exception _e) 
             {
+                Console.WriteLine(_e.Message);
                 s = "";
             }
             return s;
@@ -223,6 +224,7 @@ namespace BSFiberCore.Models.BL.Lib
             }
             catch (Exception _e)
             {
+                Console.WriteLine(_e.Message);
                 return new List<Beton>();
             }
         }
@@ -243,6 +245,7 @@ namespace BSFiberCore.Models.BL.Lib
             }
             catch (Exception _e)
             {
+                Console.WriteLine(_e.Message);
                 return new List<Beton>();
             }
         }
@@ -283,6 +286,7 @@ namespace BSFiberCore.Models.BL.Lib
             }
             catch (Exception _e)
             {
+                Console.WriteLine(_e.Message);
                 return new List<Rebar>();
             }
         }
@@ -872,6 +876,7 @@ namespace BSFiberCore.Models.BL.Lib
             }
             catch (Exception _e)
             {
+                Console.WriteLine(_e.Message);
                 return new List<RebarDiameters>();
             }
         }

@@ -22,7 +22,7 @@ namespace BSFiberCore.Models.BL.Beam
         public override double I_s() => b * Math.Pow(h, 3) / 12;
 
         [DisplayName("Расстояние от центра тяжести сечения сталефибробетонного элемента до наиболее растянутого волокна, [см]")]
-        public double y_t() => h / 2.0;
+        public new double y_t() => h / 2.0;
 
         public override double Width => b;
         public override double Height => h;

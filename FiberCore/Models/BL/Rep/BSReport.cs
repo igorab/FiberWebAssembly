@@ -12,9 +12,7 @@ namespace BSFiberCore.Models.BL.Rep
         private BeamSection m_BeamSection;
 
         private Dictionary<string, double> m_Beam;
-
-        private LameUnitConverter _UnitConverter;
-
+        
         public BSCalcResultNDM CalcRes { get; set; }
         
         /// <summary>
@@ -114,7 +112,8 @@ namespace BSFiberCore.Models.BL.Rep
             }
             catch (Exception _e)
             {
-                throw _e;
+                Console.WriteLine(_e.Message);
+                return "";
             }
         }
 
@@ -150,7 +149,8 @@ namespace BSFiberCore.Models.BL.Rep
             }
             catch (Exception _e)
             {
-                throw _e;
+                Console.WriteLine(_e.Message);
+                return "";
             }
         }        
     }

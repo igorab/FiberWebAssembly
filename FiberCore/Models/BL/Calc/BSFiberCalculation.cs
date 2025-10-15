@@ -42,11 +42,7 @@ namespace BSFiberCore.Models.BL.Calc
         protected double Yb2;
         protected double Yb3;
         protected double Yb5;
-        
-        private readonly double Ab;
-
-        private readonly double e0;
-
+                
         public virtual Dictionary<string, double> Coeffs
         {
             get

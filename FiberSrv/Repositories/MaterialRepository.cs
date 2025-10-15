@@ -146,6 +146,7 @@ namespace FiberSrv.Repositories
             }
             catch (Exception _e)
             {
+                Console.WriteLine(_e.Message);
                 return new List<Beton>();
             }
         }

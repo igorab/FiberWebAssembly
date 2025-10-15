@@ -22,17 +22,18 @@ namespace BSFiberCore.Models.BL.Rep
         /// <summary>
         /// данные для формирование общей части отчета
         /// </summary>
-        public BSFiberReportData BSFibCalc {
+        public BSFiberReportData BSFibCalc
+        {
             set
             {
-                m_ReportData  = value;
+                m_ReportData = value;
                 m_BeamSection = value.BeamSection;
-                m_Msg         = value.Messages;
-                UseRebar      = value.UseReinforcement;
+                m_Msg = value.Messages;
+                UseRebar = value.UseReinforcement;
                 UnitConverter = value.UnitConverter;
-            }                 
+            }
         }
-        
+
         public LameUnitConverter? UnitConverter { get; set; }
 
         /// <summary>
@@ -64,20 +65,20 @@ namespace BSFiberCore.Models.BL.Rep
                 if (m_ReportData == null)
                     throw new Exception("Не выполнен расчет");
 
-                string  pathToHtmlFile = "";
-                string  _reportName = "";
-                int     LoadIdx = 0;
+                string pathToHtmlFile = "";
+                string _reportName = "";
+                int LoadIdx = 0;
 
                 BSFiberReport report = new BSFiberReport();
-                                
+
                 if (_reportName != "")
                     report.ReportName = _reportName;
-                report.BeamSection    = m_BeamSection;              
+                report.BeamSection = m_BeamSection;
                 InitReportSections(ref report);
-                                        
+
                 string filename = "FiberCalculationReport.htm";
                 try
-                {                    
+                {
                     using (FileStream fs = new FileStream(filename, FileMode.Create))
                     {
                         using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
@@ -85,16 +86,16 @@ namespace BSFiberCore.Models.BL.Rep
                             report.Header(w);
 
                             report.ReportBody(w);
-                            
+
                             foreach (BSFiberReportData fiberReport in ListFiberReportData)
                             {
                                 w.WriteLine($"<H2>Расчет по комбинации загружений: {++LoadIdx}</H2>");
 
-                                report.InitFromBSFiberReportData(fiberReport);                                
-                                report.ReportEfforts(w);                                
+                                report.InitFromBSFiberReportData(fiberReport);
+                                report.ReportEfforts(w);
                                 report.ReportResult(w);
                                 report.Footer(w);
-                            }                                                        
+                            }
                         }
 
                         pathToHtmlFile = fs.Name;
@@ -110,7 +111,7 @@ namespace BSFiberCore.Models.BL.Rep
                 //System.Diagnostics.Process.Start(pathToHtmlFile);
 
                 var htmlContent = System.IO.File.ReadAllText(pathToHtmlFile);
-                return  htmlContent;                
+                return htmlContent;
             }
             catch (Exception _e)
             {
@@ -119,82 +120,19 @@ namespace BSFiberCore.Models.BL.Rep
         }
 
         private void InitReportSections(ref BSFiberReport report)
-        {           
-            report.Beam              = null;
-            report.Coeffs            = m_ReportData.Coeffs; 
-            report.Efforts           = m_ReportData.Efforts; 
-            report.GeomParams        = m_ReportData.GeomParams; 
-            report.PhysParams        = m_ReportData.PhysParams;
-            report.Reinforcement     = m_ReportData.m_Reinforcement;
+        {
+            report.Beam = null;
+            report.Coeffs = m_ReportData.Coeffs;
+            report.Efforts = m_ReportData.Efforts;
+            report.GeomParams = m_ReportData.GeomParams;
+            report.PhysParams = m_ReportData.PhysParams;
+            report.Reinforcement = m_ReportData.m_Reinforcement;
             report.CalcResults1Group = m_ReportData.CalcResults1Group;
             report.CalcResults2Group = m_ReportData.CalcResults2Group;
-            report.ImageStream       = m_ReportData.ImageStream;
-            report.Messages          = m_ReportData.Messages;
-            report._unitConverter    = m_ReportData.UnitConverter;
+            report.ImageStream = m_ReportData.ImageStream;
+            report.Messages = m_ReportData.Messages;
+            report._unitConverter = m_ReportData.UnitConverter;
             report.UseReinforcement = m_ReportData.UseReinforcement;
         }
-
-        /// <summary>
-        ///  Сформировать отчет
-        /// </summary>
-        /// <param name="_reportName">Заголовок</param>
-        /// <param name="_useReinforcement">Используется ли арматура</param>
-        /// <returns>Путь к файлу отчета</returns>
-        private string CreateReport(int _fileIdx,
-                                    BeamSection _BeamSection,
-                                    string _reportName = "",
-                                    bool _useReinforcement = false)
-        {
-            try
-            {                
-                BSFiberReport report = new BSFiberReport();
-
-                if (_reportName != "")
-                    report.ReportName = _reportName;
-
-                report.BeamSection = _BeamSection;
-                report.UseReinforcement = _useReinforcement;
-
-                InitReportSections(ref report);
-
-                //path = report.CreateReport(_fileId);
-
-                string pathToHtmlFile = "";
-                string filename = "FiberCalculationReport{0}.htm";
-                try
-                {
-                    filename = (_fileIdx == 0) ? string.Format(filename, "") : string.Format(filename, _fileIdx);
-
-                    using (FileStream fs = new FileStream(filename, FileMode.Create))
-                    {
-                        using (StreamWriter w = new StreamWriter(fs, Encoding.UTF8))
-                        {
-                            report.Header(w);
-
-                            report.ReportBody(w);
-
-                            report.ReportEfforts(w);
-
-                            report.ReportResult(w);
-
-                            report.Footer(w);
-                        }
-
-                        pathToHtmlFile = fs.Name;
-                    }
-                }
-                catch (Exception _e)
-                {
-                    MessageBox.Show("Ошибка при формировании отчета: " + _e.Message);
-                    pathToHtmlFile = "";
-                }
-
-                return pathToHtmlFile;                
-            }
-            catch (Exception _e)
-            {
-                throw _e;
-            }
-        }      
     }
 }

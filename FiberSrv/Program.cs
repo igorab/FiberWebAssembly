@@ -41,6 +41,41 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+app.MapGet("/rand", async context =>
+{
+    string html = "<html><body><img src='random.png'></body></html>";
+    context.Response.ContentType = "text/html";
+    await context.Response.WriteAsync(html);
+});
+
+app.MapGet("/random.png", async context =>
+{
+    ScottPlot.Plot myPlot = new();
+    double[] dataX = ScottPlot.Generate.Consecutive(100);
+    double[] dataY = ScottPlot.Generate.RandomWalk(100);
+    myPlot.Add.Scatter(dataX, dataY);
+
+    byte[] imageBytes = myPlot.GetImageBytes(400, 300, ScottPlot.ImageFormat.Png);
+    context.Response.ContentType = "image/png";
+    await context.Response.Body.WriteAsync(imageBytes, 0, imageBytes.Length);
+});
+
+app.MapGet("/svg", async context =>
+{
+    ScottPlot.Plot myPlot = new();
+    double[] dataX = ScottPlot.Generate.Consecutive(100);
+    double[] dataY = ScottPlot.Generate.RandomWalk(100);
+    myPlot.Add.Scatter(dataX, dataY);
+
+    string svg = myPlot.GetSvgXml(600, 400);
+    string html = $"<html><body>{svg}</body></html>";
+    context.Response.ContentType = "text/html";
+    await context.Response.WriteAsync(html);
+});
+
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
