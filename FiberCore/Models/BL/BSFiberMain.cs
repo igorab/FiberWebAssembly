@@ -800,6 +800,24 @@ namespace BSFiberCore.Models.BL
             return dbRebar;
         }
 
+        private string Plt()
+        {
+            // create a plot and fill it with sample data
+            ScottPlot.Plot myPlot = new();
+            double[] dataX = ScottPlot.Generate.Consecutive(100);
+            double[] dataY = ScottPlot.Generate.RandomWalk(100);
+            myPlot.Add.Scatter(dataX, dataY);
+
+            // render the plot as a PNG and encode its bytes in HTML
+            byte[] imgBytes = myPlot.GetImageBytes(600, 400, ScottPlot.ImageFormat.Png);
+            string b64 = Convert.ToBase64String(imgBytes);
+            string png = $"<img src='data:image/png;base64,{b64}'>";
+            string html = $"<html><body>{png}</body></html>";
+
+            return html;
+        }
+
+
         public void CreatePictureForBodyReport(List<BSCalcResultNDM> calcResultsNDM)
         {
             for (int i = 0; calcResultsNDM.Count > i; i++)
@@ -807,27 +825,29 @@ namespace BSFiberCore.Models.BL
                 BSCalcResultNDM calcResNDM = calcResultsNDM[i];
 
                 List<string> pathToPictures = new List<string>();
-                string pathToPicture;
-                // изополя сечения по деформации                
-                string pictureName = $"beamSectionMeshDeform{i}";
-                pathToPicture = Directory.GetCurrentDirectory() + "\\" + pictureName + ".png";                    
-                MeshDraw mDraw = CreateMosaic(1, calcResNDM.Eps_B, calcResNDM.Eps_S, calcResNDM.Eps_fbt_ult, calcResNDM.Eps_fb_ult, calcResNDM.Rs);
-                if (mDraw.SaveToPNG("Относительные деформации", pathToPicture))
-                {
-                    pathToPictures.Add(pathToPicture);
-                }
+
+                string pathToPicture = Plt();
+
+                //// изополя сечения по деформации                
+                //string pictureName = $"beamSectionMeshDeform{i}";
+                //pathToPicture = Directory.GetCurrentDirectory() + "\\" + pictureName + ".png";                    
+                //MeshDraw mDraw = CreateMosaic(1, calcResNDM.Eps_B, calcResNDM.Eps_S, calcResNDM.Eps_fbt_ult, calcResNDM.Eps_fb_ult, calcResNDM.Rs);
+                //if (mDraw.SaveToPNG("Относительные деформации", pathToPicture))
+                //{
+                //    pathToPictures.Add(pathToPicture);
+                //}
                                     
-                // изополя сечения по напряжению                
-                string pictureNameStress = $"beamSectionMeshStress{i}";
-                pathToPicture = Directory.GetCurrentDirectory() + "\\" + pictureName + ".png";
-                // не самое элегантное решение, чтобы не рисовать ограничивающие рамки, в случае превышения нормативных значений
-                double ultMaxValue = calcResNDM.Sig_B?.Max()??0 + 1;
-                double ultMinValue = calcResNDM.Sig_B?.Min()??0 - 1;
-                MeshDraw mDrawStress = CreateMosaic(2, calcResNDM.Sig_B, calcResNDM.Sig_S, ultMaxValue, ultMinValue, BSHelper.kgssm2kNsm(calcResNDM.Rs));                    
-                if (mDraw.SaveToPNG("Напряжения", pathToPicture))
-                {
-                    pathToPictures.Add(pathToPicture);
-                }
+                //// изополя сечения по напряжению                
+                //string pictureNameStress = $"beamSectionMeshStress{i}";
+                //pathToPicture = Directory.GetCurrentDirectory() + "\\" + pictureName + ".png";
+                //// не самое элегантное решение, чтобы не рисовать ограничивающие рамки, в случае превышения нормативных значений
+                //double ultMaxValue = calcResNDM.Sig_B?.Max()??0 + 1;
+                //double ultMinValue = calcResNDM.Sig_B?.Min()??0 - 1;
+                //MeshDraw mDrawStress = CreateMosaic(2, calcResNDM.Sig_B, calcResNDM.Sig_S, ultMaxValue, ultMinValue, BSHelper.kgssm2kNsm(calcResNDM.Rs));                    
+                //if (mDraw.SaveToPNG("Напряжения", pathToPicture))
+                //{
+                //    pathToPictures.Add(pathToPicture);
+                //}
                                 
                 if (pathToPictures.Count > 0)
                 {
