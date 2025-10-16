@@ -812,9 +812,26 @@ namespace BSFiberCore.Models.BL
             byte[] imgBytes = myPlot.GetImageBytes(600, 400, ScottPlot.ImageFormat.Png);
             string b64 = Convert.ToBase64String(imgBytes);
             string png = $"<img src='data:image/png;base64,{b64}'>";
-            string html = $"<html><body>{png}</body></html>";
+            string html = $"{png}";
 
             return html;
+        }
+
+        public void CreatePictureForHeaderReport(List<BSCalcResultNDM> calcResults)
+        {
+            List<string> pathToPictures = new List<string>();
+            string pathToPicture = Plt(); 
+            //// Диаграмма деформирования
+            
+            //    // собрать данные
+            //    DataForDeformDiagram data = ValuesForDeformDiagram();
+            //    // определить vm
+            //    CalcDeformDiagram calculateDiagram = new CalcDeformDiagram(data.typesDiagram, data.resists, data.elasticity);
+            //    Chart deformDiagram = calculateDiagram.CreteChart();
+            //    pathToPicture = CalcDeformDiagram.SaveChart(deformDiagram);
+            pathToPictures.Add(pathToPicture);
+            
+            calcResults[0].PictureForHeaderReport = pathToPictures;
         }
 
 
@@ -828,26 +845,30 @@ namespace BSFiberCore.Models.BL
 
                 string pathToPicture = Plt();
 
-                //// изополя сечения по деформации                
-                //string pictureName = $"beamSectionMeshDeform{i}";
-                //pathToPicture = Directory.GetCurrentDirectory() + "\\" + pictureName + ".png";                    
+                // изополя сечения по деформации                
+                string pictureName = $"beamSectionMeshDeform{i}.png"; 
+
                 //MeshDraw mDraw = CreateMosaic(1, calcResNDM.Eps_B, calcResNDM.Eps_S, calcResNDM.Eps_fbt_ult, calcResNDM.Eps_fb_ult, calcResNDM.Rs);
-                //if (mDraw.SaveToPNG("Относительные деформации", pathToPicture))
-                //{
-                //    pathToPictures.Add(pathToPicture);
-                //}
+                bool ok = true;// mDraw.SaveToPNG("Относительные деформации", pathToPicture)
+
+                if (ok)
+                {
+                    pathToPictures.Add(pathToPicture);
+                }
                                     
-                //// изополя сечения по напряжению                
-                //string pictureNameStress = $"beamSectionMeshStress{i}";
+                // изополя сечения по напряжению                
+                string pictureNameStress = $"beamSectionMeshStress{i}.png";
                 //pathToPicture = Directory.GetCurrentDirectory() + "\\" + pictureName + ".png";
-                //// не самое элегантное решение, чтобы не рисовать ограничивающие рамки, в случае превышения нормативных значений
-                //double ultMaxValue = calcResNDM.Sig_B?.Max()??0 + 1;
-                //double ultMinValue = calcResNDM.Sig_B?.Min()??0 - 1;
-                //MeshDraw mDrawStress = CreateMosaic(2, calcResNDM.Sig_B, calcResNDM.Sig_S, ultMaxValue, ultMinValue, BSHelper.kgssm2kNsm(calcResNDM.Rs));                    
-                //if (mDraw.SaveToPNG("Напряжения", pathToPicture))
-                //{
-                //    pathToPictures.Add(pathToPicture);
-                //}
+                // не самое элегантное решение, чтобы не рисовать ограничивающие рамки, в случае превышения нормативных значений
+                // double ultMaxValue = calcResNDM.Sig_B?.Max()??0 + 1;
+                // double ultMinValue = calcResNDM.Sig_B?.Min()??0 - 1;
+
+                //MeshDraw mDrawStress = CreateMosaic(2, calcResNDM.Sig_B, calcResNDM.Sig_S, ultMaxValue, ultMinValue, BSHelper.kgssm2kNsm(calcResNDM.Rs));
+                //ok = mDrawStress.SaveToPNG("Напряжения", pathToPicture)
+                if (ok)
+                {
+                    pathToPictures.Add(pathToPicture);
+                }
                                 
                 if (pathToPictures.Count > 0)
                 {

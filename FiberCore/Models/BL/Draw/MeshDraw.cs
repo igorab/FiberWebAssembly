@@ -95,7 +95,9 @@ namespace BSFiberCore.Models.BL.Draw
                         myPlot = colorsAndScale.CreateColorScale(MosaicMode);
 
                     string pathToPicture = "ColorScale.png";
+
                     myPlot.SavePng(pathToPicture, 100, _heightToSave);
+
                     // нужно повернуть картинку, иначе она не встает в Plot.Axes.Left.Label.Image
                     Bitmap image = new Bitmap(pathToPicture);
 
@@ -103,6 +105,7 @@ namespace BSFiberCore.Models.BL.Draw
                     image.Save(pathToPicture, System.Drawing.Imaging.ImageFormat.Png);
 
                     ScottPlot.Image img1 = new ScottPlot.Image(pathToPicture);
+                    
                     save_ok = img1 != null;
                 }                
             }

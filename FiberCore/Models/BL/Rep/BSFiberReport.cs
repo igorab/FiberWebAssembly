@@ -42,8 +42,9 @@ namespace BSFiberCore.Models.BL.Rep
         protected Dictionary<string, double>? m_Reinforcement;
         protected List<string> m_Messages;
         protected List<string> m_Path2BeamDiagrams;
-        protected List<string> m_PictureToHeadReport;
-        protected List<string> m_PictureToBodyReport;
+
+        protected List<string> m_PictureToHeadReport { get; set; }
+        protected List<string> m_PictureToBodyReport { get; set; }
 
 
         public List<ReinforcementBar> ReinforcingBars;
@@ -248,11 +249,11 @@ namespace BSFiberCore.Models.BL.Rep
             {
                 // добавление картинок в отчет
                 w.WriteLine("<Table border=1 bordercolor = darkblue>");
-                foreach (string pathToBeamDiagram in m_PictureToHeadReport)
+                foreach (string pictureToHeader in m_PictureToHeadReport)
                 {
                     w.WriteLine("<tr>");
                     w.WriteLine("<td>");
-                    w.WriteLine($"<img src =\"{pathToBeamDiagram}\">");
+                    w.WriteLine($"{pictureToHeader}");
                     w.WriteLine("</td>");
                     w.WriteLine("</tr>");
                 }
@@ -389,10 +390,10 @@ namespace BSFiberCore.Models.BL.Rep
                 w.WriteLine("<Table border=1 bordercolor = darkblue>");
                 w.WriteLine("<tr>");
 
-                foreach (string pathToBeamDiagram in m_PictureToBodyReport)
+                foreach (string picToBody in m_PictureToBodyReport)
                 {
                     w.WriteLine("<td>");
-                    w.WriteLine($"<img src =\"{pathToBeamDiagram}\">");
+                    w.WriteLine($"{picToBody}");
                     w.WriteLine("</td>");
                 }
                 w.WriteLine("</tr>");
@@ -404,7 +405,6 @@ namespace BSFiberCore.Models.BL.Rep
             {
                 if (ReinforcingBars.Count != 0)
                 {
-
                     w.WriteLine("<Table border=2 bordercolor = darkblue>");
                     w.WriteLine("<tr>");
 

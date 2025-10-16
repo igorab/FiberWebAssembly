@@ -135,9 +135,12 @@ public class FiberCalculator
 
             if (ok)
             {
+                fiberMain.CreatePictureForHeaderReport(calcResultsNdm);
+
                 fiberMain.CreatePictureForBodyReport(calcResultsNdm);
+                var beam_section  = (BeamSection)SectionType;
                 // формирование отчета
-                htmlContent = BSReport.RunReport((BeamSection)SectionType, calcResultsNdm);
+                htmlContent = BSReport.RunReport(beam_section, calcResultsNdm);
             }
         }
         
@@ -291,10 +294,7 @@ public class FiberCalculator
                 }
             }
 
-            return calcResultsNdm.Count > 0;
-            //CreatePictureForHeaderReport(calcResults);
-            
-            
+            return calcResultsNdm.Count > 0;            
         }
         catch (Exception _e)
         {
