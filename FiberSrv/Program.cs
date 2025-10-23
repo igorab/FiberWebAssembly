@@ -33,6 +33,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+//TODO тест отображения графиков на сервере
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

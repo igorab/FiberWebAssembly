@@ -2,18 +2,18 @@
 {
     public class MeshSectionSettings
     {
-        private int _nX;
-        private int _nY;
+        private int? _nX;
+        private int? _nY;
         private double _minAngle;
         private double _maxArea;
 
-        public int NX
+        public int? NX
         {
             get { return _nX; }
             set { _nX = value; }
         }
 
-        public int NY
+        public int? NY
         {
             get { return _nY; }
             set { _nY = value; }

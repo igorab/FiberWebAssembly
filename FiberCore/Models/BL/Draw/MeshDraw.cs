@@ -15,7 +15,7 @@ namespace BSFiberCore.Models.BL.Draw
     /// </summary>
     public class MeshDraw
     {
-        private FormsPlot _formsPlot;
+        private ScottPlot.Plot _formsPlot;
 
         // шаг сетки
         private int Ny; // горизонтальная ось
@@ -124,9 +124,9 @@ namespace BSFiberCore.Models.BL.Draw
         /// <param name="_maxTension">Предельное значение напряжения</param>
         /// <param name="_minTension">Предельное значение напряжения</param>
         /// <returns></returns>
-        public FormsPlot PaintSectionMesh()
+        public ScottPlot.Plot PaintSectionMesh()
         {
-            FormsPlot formsPlt = new FormsPlot() { /*Dock = DockStyle.Fill*/ };
+            ScottPlot.Plot formsPlt = new ScottPlot.Plot() { /*Dock = DockStyle.Fill*/ };
 
             int numOfSegments = 50;
             int maxValueColor = 255;
@@ -177,7 +177,7 @@ namespace BSFiberCore.Models.BL.Draw
         /// <param name="sz"></param>
         /// <param name="_bs"></param>
         /// <returns></returns>
-        public FormsPlot CreateRectanglePlot1(double[] sz, BeamSection _bs)
+        public ScottPlot.Plot CreateRectanglePlot1(double[] sz, BeamSection _bs)
         {
             var msh = new MeshRect(Ny, Nz);
 
@@ -189,9 +189,8 @@ namespace BSFiberCore.Models.BL.Draw
             {
                 msh.IBeamSection(sz[0], sz[1], sz[2], sz[3], sz[4], sz[5]);
             }
-
-            FormsPlot formsPlot = new FormsPlot() { /*Dock = DockStyle.Fill*/ };
-            //formsPlot.Plot.Axes.SquareUnits();
+            ScottPlot.Plot formsPlot = new  ScottPlot.Plot() { };
+            formsPlot.Axes.SquareUnits();
 
             int idx = 0;
             int cnt = msh.rectangleFs.Count;
@@ -206,7 +205,8 @@ namespace BSFiberCore.Models.BL.Draw
                     new Coordinates(tr.Left, tr.Top)
                 };
 
-                ScottPlot.Plottables.Polygon poly = null; // formsPlot.Plot.Add.Polygon(points);
+                ScottPlot.Plottables.Polygon poly = formsPlot.Add.Polygon(points);
+
                 if (Values_B != null && Values_B.Count == cnt)
                 {
                     double measured_value = Values_B[idx];
@@ -230,9 +230,9 @@ namespace BSFiberCore.Models.BL.Draw
                 return; 
 
             if (_formsPlot == null)
-                _formsPlot = new FormsPlot();
+                _formsPlot = new ScottPlot.Plot();
 
-            Plot myPlot = null;  // = _formsPlot.Plot;
+            Plot myPlot = new ScottPlot.Plot();
 
             for (int i = 0; bsRods.Count > i; i ++)
             {

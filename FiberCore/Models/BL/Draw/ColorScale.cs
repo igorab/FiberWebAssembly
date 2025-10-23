@@ -82,7 +82,14 @@ namespace BSFiberCore.Models.BL.Draw
             {
                 double value0 = deltaPositive * (i - 1);
                 double value1 = deltaPositive * i;
-                Bar tmpBar = new Bar() { Position = 1, ValueBase = value0, Value = value1, FillColor = ColorFromScale(value1, typeOfColor) };
+                var clr = ColorFromScale(value1, typeOfColor);
+
+                ScottPlot.Bar tmpBar = new Bar() { 
+                    Position = 1, 
+                    ValueBase = value0, 
+                    Value = value1, 
+                    FillColor = clr
+                };
                 positiveBars.Add(tmpBar);
 
                 value0 = deltaNegative * (i - 1);

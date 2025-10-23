@@ -19,7 +19,7 @@ namespace BSFiberCore.Models.BL
     {
         private BSFiberCalculation BSFibCalc;
         private LameUnitConverter _UnitConverter;
-        private MeshSectionSettings _beamSectionMeshSettings { get; set; }
+        private MeshSectionSettings? _beamSectionMeshSettings { get; set; }
 
         private double[] sz;
 
@@ -650,8 +650,8 @@ namespace BSFiberCore.Models.BL
             string pathToSvgFile;
             double[] sz = BeamWidtHeight(out double b, out double h, out double area);
 
-            BSMesh.Nx = _beamSectionMeshSettings.NX;
-            BSMesh.Ny = _beamSectionMeshSettings.NY;
+            BSMesh.Nx = _beamSectionMeshSettings.NX ?? 10;
+            BSMesh.Ny = _beamSectionMeshSettings.NY ?? 10;
             BSMesh.MinAngle = _beamSectionMeshSettings.MinAngle;
             Tri.Tri.MinAngle = _beamSectionMeshSettings.MinAngle;
             BSMesh.MaxArea = _beamSectionMeshSettings.MaxArea;
@@ -800,7 +800,11 @@ namespace BSFiberCore.Models.BL
             return dbRebar;
         }
 
-        private string Plt()
+        /// <summary>
+        /// диаграмма деформирования
+        /// </summary>
+        /// <returns></returns>
+        private string DiagramPlot()
         {
             // create a plot and fill it with sample data
             ScottPlot.Plot myPlot = new();
@@ -820,7 +824,7 @@ namespace BSFiberCore.Models.BL
         public void CreatePictureForHeaderReport(List<BSCalcResultNDM> calcResults)
         {
             List<string> pathToPictures = new List<string>();
-            string pathToPicture = Plt(); 
+            string pathToPicture = DiagramPlot(); 
             //// Диаграмма деформирования
             
             //    // собрать данные
@@ -837,19 +841,20 @@ namespace BSFiberCore.Models.BL
 
         public void CreatePictureForBodyReport(List<BSCalcResultNDM> calcResultsNDM)
         {
-            for (int i = 0; calcResultsNDM.Count > i; i++)
+            for (int i = 0; i < calcResultsNDM.Count ; i++)
             {
                 BSCalcResultNDM calcResNDM = calcResultsNDM[i];
 
                 List<string> pathToPictures = new List<string>();
 
-                string pathToPicture = Plt();
+                string pathToPicture = DiagramPlot();
 
                 // изополя сечения по деформации                
                 string pictureName = $"beamSectionMeshDeform{i}.png"; 
 
-                //MeshDraw mDraw = CreateMosaic(1, calcResNDM.Eps_B, calcResNDM.Eps_S, calcResNDM.Eps_fbt_ult, calcResNDM.Eps_fb_ult, calcResNDM.Rs);
-                bool ok = true;// mDraw.SaveToPNG("Относительные деформации", pathToPicture)
+                MeshDraw mDraw = CreateMosaic(1, calcResNDM.Eps_B, calcResNDM.Eps_S, calcResNDM.Eps_fbt_ult, calcResNDM.Eps_fb_ult, calcResNDM.Rs);
+
+                bool ok = mDraw.SaveToPNG("Относительные деформации", pathToPicture);
 
                 if (ok)
                 {
@@ -858,13 +863,13 @@ namespace BSFiberCore.Models.BL
                                     
                 // изополя сечения по напряжению                
                 string pictureNameStress = $"beamSectionMeshStress{i}.png";
-                //pathToPicture = Directory.GetCurrentDirectory() + "\\" + pictureName + ".png";
+                
                 // не самое элегантное решение, чтобы не рисовать ограничивающие рамки, в случае превышения нормативных значений
-                // double ultMaxValue = calcResNDM.Sig_B?.Max()??0 + 1;
-                // double ultMinValue = calcResNDM.Sig_B?.Min()??0 - 1;
+                double ultMaxValue = calcResNDM.Sig_B?.Max()??0 + 1;
+                double ultMinValue = calcResNDM.Sig_B?.Min()??0 - 1;
 
-                //MeshDraw mDrawStress = CreateMosaic(2, calcResNDM.Sig_B, calcResNDM.Sig_S, ultMaxValue, ultMinValue, BSHelper.kgssm2kNsm(calcResNDM.Rs));
-                //ok = mDrawStress.SaveToPNG("Напряжения", pathToPicture)
+                MeshDraw mDrawStress = CreateMosaic(2, calcResNDM.Sig_B, calcResNDM.Sig_S, ultMaxValue, ultMinValue, BSHelper.kgssm2kNsm(calcResNDM.Rs));
+                ok = mDrawStress.SaveToPNG("Напряжения", pathToPicture);
                 if (ok)
                 {
                     pathToPictures.Add(pathToPicture);
@@ -884,8 +889,8 @@ namespace BSFiberCore.Models.BL
         /// <param name="_valuesB">значения для бетона</param>
         /// <param name="_valuesB">значения для арматуры</param>
         private MeshDraw CreateMosaic(int _Mode = 0,
-                                List<double> _valuesB = null,
-                                List<double> _valuesS = null,
+                                List<double>? _valuesB = null,
+                                List<double>? _valuesS = null,
                                 double _ultMax = 0,
                                 double _ultMin = 0,
                                 double _ultRs = 0,
@@ -898,8 +903,14 @@ namespace BSFiberCore.Models.BL
 
             if (BSHelper.IsRectangled(BeamSection))
             {
-                int nx = _beamSectionMeshSettings?.NX??10; 
-                int ny = _beamSectionMeshSettings?.NY??10;
+                int nx = 10; 
+                int ny = 10;
+
+                if (_beamSectionMeshSettings != null)
+                {
+                    nx = _beamSectionMeshSettings.NX ?? 10;                 
+                    ny = _beamSectionMeshSettings.NY ?? 10;
+                }
 
                 mDraw = new MeshDraw(nx, ny);
                 mDraw.MosaicMode = _Mode;
