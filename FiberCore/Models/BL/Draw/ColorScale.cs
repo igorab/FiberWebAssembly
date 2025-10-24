@@ -18,10 +18,12 @@ namespace BSFiberCore.Models.BL.Draw
         /// Кол-во участков на которое будет разбит диапазон значений от 0 до maxValue (maxValue)
         /// </summary>
         private int numOfSegments;
+
         /// <summary>
         /// Список всех значений
         /// </summary>
-        private List<double> values;
+        private List<double>? values { get; set; }
+
         // предельные значения
         private double ultMin;
         private double ultMax;
@@ -37,7 +39,7 @@ namespace BSFiberCore.Models.BL.Draw
         private int deltaRGB;
 
 
-        public ColorScale(List<double> values, double ultMax, double ultMin)
+        public ColorScale(List<double>? values, double ultMax, double ultMin)
         {
             this.values = values;
             this.ultMax = ultMax;
@@ -94,7 +96,12 @@ namespace BSFiberCore.Models.BL.Draw
 
                 value0 = deltaNegative * (i - 1);
                 value1 = deltaNegative * i;
-                tmpBar = new Bar() { Position = 1, ValueBase = value0, Value = value1, FillColor = ColorFromScale(value1, typeOfColor) };
+                tmpBar = new Bar() { 
+                    Position = 1, 
+                    ValueBase = value0, 
+                    Value = value1, 
+                    FillColor = ColorFromScale(value1, typeOfColor) 
+                };
                 negativeBars.Add(tmpBar);
             }
             positiveBars.AddRange(negativeBars);
@@ -107,9 +114,9 @@ namespace BSFiberCore.Models.BL.Draw
             myPlot.Axes.Bottom.MinorTickStyle.Length = 0;
             myPlot.Grid.XAxisStyle.IsVisible = false;
             myPlot.Grid.YAxisStyle.IsVisible = false;
-            if (xLabel != null)
-            { myPlot.XLabel(xLabel); }
 
+            if (xLabel != null) myPlot.XLabel(xLabel);
+            
             return myPlot;
         }
 
@@ -126,9 +133,11 @@ namespace BSFiberCore.Models.BL.Draw
             byte redColor;
             byte greenColor;
             byte blueColor;
+
             if (measuredValue > 0)
             {
                 int m = CalcPositiveRangeNumber(measuredValue);
+
                 switch (typeOfColor)
                 {
                     case 2:
@@ -142,11 +151,11 @@ namespace BSFiberCore.Models.BL.Draw
                         blueColor = (byte)(m * deltaRGB);
                         break;
                 }
-            }
-            //else if (measured_value <= 0 )
+            }            
             else
             {
                 int m = CalcNegativeRangeNumber(measuredValue);
+
                 switch (typeOfColor)
                 {
                     case 2:
@@ -203,10 +212,14 @@ namespace BSFiberCore.Models.BL.Draw
         /// <returns></returns>
         private int CalcNegativeRangeNumber(double measuredValue)
         {
-            if (values.Min() <= measuredValue)
-            { return (int)Math.Floor((values.Min() - measuredValue) / deltaNegative); }
+            if (values != null && values.Min() <= measuredValue)
+            { 
+                return (int)Math.Floor((values.Min() - measuredValue) / deltaNegative); 
+            }
             else
-            { return 0; }
+            { 
+                return 0; 
+            }
         }
 
 
@@ -217,10 +230,14 @@ namespace BSFiberCore.Models.BL.Draw
         /// <returns></returns>
         private int CalcPositiveRangeNumber(double measuredValue)
         {
-            if (values.Max() >= measuredValue)
-            { return (int)Math.Floor((values.Max() - measuredValue) / deltaPositive); }
+            if (values != null && values.Max() >= measuredValue)
+            { 
+                return (int)Math.Floor((values.Max() - measuredValue) / deltaPositive); 
+            }
             else
-            { return 0; }
+            { 
+                return 0; 
+            }
         }
         
     }

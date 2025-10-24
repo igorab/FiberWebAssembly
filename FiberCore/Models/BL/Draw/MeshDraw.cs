@@ -79,10 +79,8 @@ namespace BSFiberCore.Models.BL.Draw
         /// <summary>
         /// сохранение объекта FormsPlot на картинке
         /// </summary>
-        public bool SaveToPNG(string title = null, string fullPath = null)
-        {
-            bool save_ok = false;
-
+        public string? SaveToPNG(string? title = null)
+        {            
             try
             {
                 if (colorsAndScale != null)
@@ -93,28 +91,22 @@ namespace BSFiberCore.Models.BL.Draw
                         myPlot = colorsAndScale.CreateColorScale(MosaicMode, "кг/см2");
                     else
                         myPlot = colorsAndScale.CreateColorScale(MosaicMode);
-
-                    string pathToPicture = "ColorScale.png";
-
-                    myPlot.SavePng(pathToPicture, 100, _heightToSave);
-
-                    // нужно повернуть картинку, иначе она не встает в Plot.Axes.Left.Label.Image
-                    Bitmap image = new Bitmap(pathToPicture);
-
-                    image.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                    image.Save(pathToPicture, System.Drawing.Imaging.ImageFormat.Png);
-
-                    ScottPlot.Image img1 = new ScottPlot.Image(pathToPicture);
                     
-                    save_ok = img1 != null;
+                    // render the plot as a PNG and encode its bytes in HTML
+                    byte[] imgBytes = myPlot.GetImageBytes(100, _heightToSave, ScottPlot.ImageFormat.Png);
+                    string b64 = Convert.ToBase64String(imgBytes);
+                    string png = $"<img src='data:image/png;base64,{b64}'>";
+                    string html = $"{png}";
+                    
+                    return  html;
                 }                
             }
             catch
             {
-                save_ok = false;
+                return $"err";
             }
 
-            return save_ok;
+            return "";
         }
         
         /// <summary>

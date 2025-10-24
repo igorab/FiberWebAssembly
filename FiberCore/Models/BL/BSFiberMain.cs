@@ -845,39 +845,27 @@ namespace BSFiberCore.Models.BL
             {
                 BSCalcResultNDM calcResNDM = calcResultsNDM[i];
 
-                List<string> pathToPictures = new List<string>();
-
-                string pathToPicture = DiagramPlot();
-
-                // изополя сечения по деформации                
-                string pictureName = $"beamSectionMeshDeform{i}.png"; 
-
+                List<string> pictures = new List<string>();
+                
+                // изополя сечения по деформации                                
                 MeshDraw mDraw = CreateMosaic(1, calcResNDM.Eps_B, calcResNDM.Eps_S, calcResNDM.Eps_fbt_ult, calcResNDM.Eps_fb_ult, calcResNDM.Rs);
 
-                bool ok = mDraw.SaveToPNG("Относительные деформации", pathToPicture);
-
-                if (ok)
-                {
-                    pathToPictures.Add(pathToPicture);
-                }
-                                    
-                // изополя сечения по напряжению                
-                string pictureNameStress = $"beamSectionMeshStress{i}.png";
-                
+                string htmlPlotDeform = mDraw.SaveToPNG("Относительные деформации");                
+                pictures.Add(htmlPlotDeform);
+                                                    
+                // изополя сечения по напряжению                                                
                 // не самое элегантное решение, чтобы не рисовать ограничивающие рамки, в случае превышения нормативных значений
                 double ultMaxValue = calcResNDM.Sig_B?.Max()??0 + 1;
                 double ultMinValue = calcResNDM.Sig_B?.Min()??0 - 1;
 
                 MeshDraw mDrawStress = CreateMosaic(2, calcResNDM.Sig_B, calcResNDM.Sig_S, ultMaxValue, ultMinValue, BSHelper.kgssm2kNsm(calcResNDM.Rs));
-                ok = mDrawStress.SaveToPNG("Напряжения", pathToPicture);
-                if (ok)
+                string htmlPlotStress = mDrawStress.SaveToPNG("Напряжения");   
+                
+                pictures.Add(htmlPlotStress);
+                                                
+                if (pictures.Count > 0)
                 {
-                    pathToPictures.Add(pathToPicture);
-                }
-                                
-                if (pathToPictures.Count > 0)
-                {
-                    calcResNDM.PictureForBodyReport = pathToPictures;
+                    calcResNDM.PictureForBodyReport = pictures;
                 }
             }
         }
