@@ -15,8 +15,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.6" PrivateAssets="all" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.3" />
     <PackageReference Include="MSTest.TestFramework" Version="3.10.1" />
-    <PackageReference Include="ScottPlot" Version="5.0.55" />
-    <PackageReference Include="ScottPlot.Blazor" Version="5.0.55" />
+    <PackageReference Include="ScottPlot" Version="5.1.57" />
+    <PackageReference Include="ScottPlot.Blazor" Version="5.1.57" />
 	<PackageReference Include="SkiaSharp.HarfBuzz" Version="3.119.0" />
 	<PackageReference Include="SkiaSharp.Views.Blazor" Version="3.119.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
