@@ -580,7 +580,18 @@ namespace BSFiberCore.Models.BL
 
             return xR;
         }
-      
+
+
+        private NDMSetup NDMSetupInitFormValues()
+        {
+            NDMSetup ndmSetup = BSData.LoadNDMSetup();
+
+            _beamSectionMeshSettings = new MeshSectionSettings(ndmSetup.N, ndmSetup.M, ndmSetup.MinAngle, ndmSetup.MaxArea);
+
+            return ndmSetup;
+        }
+
+
         /// <summary>
         /// Расчет по НДМ 
         /// </summary>
@@ -600,7 +611,9 @@ namespace BSFiberCore.Models.BL
 
             // данные с формы:
             Dictionary<string, double> _D = DictCalcParams(_beamSection);
-            
+
+            NDMSetupInitFormValues();
+
             // расчет:
             CalcNDM calcNDM = new CalcNDM(_beamSection) { Dprm = _D };
 
@@ -850,17 +863,21 @@ namespace BSFiberCore.Models.BL
                 // изополя сечения по деформации                                
                 MeshDraw mDraw = CreateMosaic(1, calcResNDM.Eps_B, calcResNDM.Eps_S, calcResNDM.Eps_fbt_ult, calcResNDM.Eps_fb_ult, calcResNDM.Rs);
 
-                string htmlPlotDeform = mDraw.SaveToPNG("Относительные деформации");                
+                string? htmlScaleDeform = "";
+                string htmlPlotDeform = mDraw.SaveToPNG("Относительные деформации", ref htmlScaleDeform);
+                pictures.Add(htmlScaleDeform);
                 pictures.Add(htmlPlotDeform);
-                                                    
+                                                     
                 // изополя сечения по напряжению                                                
                 // не самое элегантное решение, чтобы не рисовать ограничивающие рамки, в случае превышения нормативных значений
                 double ultMaxValue = calcResNDM.Sig_B?.Max()??0 + 1;
                 double ultMinValue = calcResNDM.Sig_B?.Min()??0 - 1;
 
+                string? htmlScale = "";
                 MeshDraw mDrawStress = CreateMosaic(2, calcResNDM.Sig_B, calcResNDM.Sig_S, ultMaxValue, ultMinValue, BSHelper.kgssm2kNsm(calcResNDM.Rs));
-                string htmlPlotStress = mDrawStress.SaveToPNG("Напряжения");   
-                
+                string htmlPlotStress = mDrawStress.SaveToPNG("Напряжения", ref htmlScale);
+
+                pictures.Add(htmlScale);
                 pictures.Add(htmlPlotStress);
                                                 
                 if (pictures.Count > 0)

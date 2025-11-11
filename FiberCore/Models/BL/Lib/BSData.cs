@@ -134,7 +134,7 @@ namespace BSFiberCore.Models.BL.Lib
             }
             catch
             {
-                return new NDMSetup() {Id = 0, Iters = 1000, M = 20, N = 20, MinAngle = 40, MaxArea = 10, BetonTypeId = 0 };
+                return new NDMSetup() {Id = 0, Iters = 1000, N = 10, M = 15, MinAngle = 40, MaxArea = 10, BetonTypeId = 0 };
             }
         }
 

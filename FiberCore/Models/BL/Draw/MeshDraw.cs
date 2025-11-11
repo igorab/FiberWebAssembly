@@ -79,7 +79,7 @@ namespace BSFiberCore.Models.BL.Draw
         /// <summary>
         /// сохранение объекта FormsPlot на картинке
         /// </summary>
-        public string? SaveToPNG(string? title = null)
+        public string? SaveToPNG(string? title, ref string? htmlScale)
         {            
             try
             {
@@ -87,17 +87,29 @@ namespace BSFiberCore.Models.BL.Draw
                 {
                     Plot myPlot = null;
 
+                    // создать шкалу
                     if (title == "Напряжения")
                         myPlot = colorsAndScale.CreateColorScale(MosaicMode, "кг/см2");
-                    else
+                    else if (title == "Относительные деформации")
                         myPlot = colorsAndScale.CreateColorScale(MosaicMode);
-                    
+
+                    if (title != null)
+                        _formsPlot.Title(title);
+
+                    // отрисовка шкалы
                     // render the plot as a PNG and encode its bytes in HTML
-                    byte[] imgBytes = myPlot.GetImageBytes(100, _heightToSave, ScottPlot.ImageFormat.Png);
+                    byte[] imgScale = myPlot.GetImageBytes(100, _heightToSave, ScottPlot.ImageFormat.Png);
+                    string b64Scale = Convert.ToBase64String(imgScale);
+                    string pngScale = $"<img src='data:image/png;base64,{b64Scale}'>";
+                    htmlScale = $"{pngScale}";                    
+                                        
+                    //_formsPlot.Axes.Left.Label.Image = img1;
+                    // отрисовка сетки
+                    byte[] imgBytes =  _formsPlot.GetImageBytes(_widthToSave, _heightToSave, ImageFormat.Png);
                     string b64 = Convert.ToBase64String(imgBytes);
                     string png = $"<img src='data:image/png;base64,{b64}'>";
                     string html = $"{png}";
-                    
+
                     return  html;
                 }                
             }
@@ -182,7 +194,7 @@ namespace BSFiberCore.Models.BL.Draw
                 msh.IBeamSection(sz[0], sz[1], sz[2], sz[3], sz[4], sz[5]);
             }
             ScottPlot.Plot formsPlot = new  ScottPlot.Plot() { };
-            formsPlot.Axes.SquareUnits();
+            //formsPlot.Axes.SquareUnits();
 
             int idx = 0;
             int cnt = msh.rectangleFs.Count;
