@@ -643,7 +643,7 @@ namespace BSFiberCore.Models.BL.Ndm
 
         public void InitFromCalcNDM(BSCalcNDM bsCalc1)
         {
-            /*
+            
             Sig_B = bsCalc1.SigmaBResult;
             Sig_S = bsCalc1.SigmaSResult;
             Eps_B = bsCalc1.EpsilonBResult;
@@ -653,8 +653,7 @@ namespace BSFiberCore.Models.BL.Ndm
             Eps_fb_ult  = bsCalc1.Eps_fb_ult; // сжатие
 
             RebarDiametersByIndex = bsCalc1.RebarDiametersByIndex;
-            ErrorIdx.Add(bsCalc1.Err);
-            */
+            ErrorIdx.Add(bsCalc1.Err);            
         }
     }
 
