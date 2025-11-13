@@ -33,7 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Data\" />
     <Folder Include="Models\BL\Data\" />
+    <Folder Include="wwwroot\Resources\" />
   </ItemGroup>
 
 </Project>

@@ -75,12 +75,12 @@ namespace BSFiberCore.Models.BL.Draw
             Nz = _Nz;
 
         }
-        
+
         /// <summary>
         /// сохранение объекта FormsPlot на картинке
-        /// </summary>
+        /// </summary>      
         public string? SaveToPNG(string? title, ref string? htmlScale)
-        {            
+        {
             try
             {
                 if (colorsAndScale != null)
@@ -88,9 +88,9 @@ namespace BSFiberCore.Models.BL.Draw
                     Plot myPlot = null;
 
                     // создать шкалу
-                    if (title == "Напряжения")
+                    if (title == BSFiberLib.TitleTension)
                         myPlot = colorsAndScale.CreateColorScale(MosaicMode, "кг/см2");
-                    else if (title == "Относительные деформации")
+                    else if (title == BSFiberLib.TitleRelativeDeformation)
                         myPlot = colorsAndScale.CreateColorScale(MosaicMode);
 
                     if (title != null)
@@ -101,25 +101,28 @@ namespace BSFiberCore.Models.BL.Draw
                     byte[] imgScale = myPlot.GetImageBytes(100, _heightToSave, ScottPlot.ImageFormat.Png);
                     string b64Scale = Convert.ToBase64String(imgScale);
                     string pngScale = $"<img src='data:image/png;base64,{b64Scale}'>";
-                    htmlScale = $"{pngScale}";                    
-                                        
-                    //_formsPlot.Axes.Left.Label.Image = img1;
+                    htmlScale = $"{pngScale}";
+
                     // отрисовка сетки
-                    byte[] imgBytes =  _formsPlot.GetImageBytes(_widthToSave, _heightToSave, ImageFormat.Png);
+                    byte[] imgBytes = _formsPlot.GetImageBytes(_widthToSave, _heightToSave, ImageFormat.Png);
                     string b64 = Convert.ToBase64String(imgBytes);
                     string png = $"<img src='data:image/png;base64,{b64}'>";
                     string html = $"{png}";
 
-                    return  html;
-                }                
+                    return html;
+                }
             }
             catch
             {
-                return $"err";
+                return "err";
             }
 
             return "";
         }
+
+
+
+        
         
         /// <summary>
         /// Треугольные полигоны закрвашиваются цветом в соответсии с maxTension и minTension

@@ -864,7 +864,7 @@ namespace BSFiberCore.Models.BL
                 MeshDraw mDraw = CreateMosaic(1, calcResNDM.Eps_B, calcResNDM.Eps_S, calcResNDM.Eps_fbt_ult, calcResNDM.Eps_fb_ult, calcResNDM.Rs);
 
                 string? htmlScaleDeform = "";
-                string htmlPlotDeform = mDraw.SaveToPNG("Относительные деформации", ref htmlScaleDeform);
+                string htmlPlotDeform = mDraw.SaveToPNG(BSFiberLib.TitleRelativeDeformation, ref htmlScaleDeform);
                 pictures.Add(htmlScaleDeform);
                 pictures.Add(htmlPlotDeform);
                                                      
@@ -875,7 +875,7 @@ namespace BSFiberCore.Models.BL
 
                 string? htmlScale = "";
                 MeshDraw mDrawStress = CreateMosaic(2, calcResNDM.Sig_B, calcResNDM.Sig_S, ultMaxValue, ultMinValue, BSHelper.kgssm2kNsm(calcResNDM.Rs));
-                string htmlPlotStress = mDrawStress.SaveToPNG("Напряжения", ref htmlScale);
+                string htmlPlotStress = mDrawStress.SaveToPNG(BSFiberLib.TitleTension, ref htmlScale);
 
                 pictures.Add(htmlScale);
                 pictures.Add(htmlPlotStress);

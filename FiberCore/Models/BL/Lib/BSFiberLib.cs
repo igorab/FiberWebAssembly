@@ -29,6 +29,9 @@ namespace BSFiberCore.Models.BL.Lib
         /// </summary>
         public const int CG2 = 2;
 
+        public const string TitleTension = "Напряжения";
+        public const string TitleRelativeDeformation = "Относительные деформации";
+
         public const string RebarClassDefault = "A400";
 
         public const double Fi = 0.9;

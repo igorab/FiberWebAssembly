@@ -1,0 +1,62 @@
+﻿@page "/Reinforcement"
+<h3>Армирование сечения</h3>
+
+@inject IJSRuntime JsRuntime
+
+<canvas id="myCanvas" width="400" height="200"></canvas>
+
+<script>
+    function drawOnCanvas(canvasId, options) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
+
+        // Круг
+        ctx.beginPath();
+        ctx.arc(50, 50, 40, 0, 2 * Math.PI);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        ctx.fillStyle = 'red';
+        ctx.fill();
+
+        // Прямоугольник
+        ctx.beginPath();
+        ctx.rect(options.rectX, options.rectY, options.rectWidth, options.rectHeight);
+        ctx.fillStyle = options.fillStyle;
+        ctx.strokeStyle = options.strokeStyle;
+        ctx.lineWidth = options.lineWidth;
+        ctx.fill();
+        ctx.stroke();
+
+        // Линия
+        ctx.beginPath();
+        ctx.moveTo(10, 150);
+        ctx.lineTo(390, 150);
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
+
+</script>
+
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var options = new
+            {
+                rectX = 120,
+                rectY = 20,
+                rectWidth = 180,
+                rectHeight = 60,
+                fillStyle = "blue",
+                strokeStyle = "black",
+                lineWidth = 3
+            };
+
+            await JsRuntime.InvokeVoidAsync("drawOnCanvas", "myCanvas", options);
+        }
+    }
+}
