@@ -8,10 +8,12 @@ using BSFiberCore.Models.BL.Rep;
 using BSFiberCore.Models.BL.Sec;
 using BSFiberCore.Models.BL.Tri;
 using BSFiberCore.Models.BL.Uom;
+using FiberCore.Models.BL.Diagram;
 using FiberCore.Services;
 using MathNet.Numerics.Distributions;
 using System.Data;
 using System.Drawing;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BSFiberCore.Models.BL
 {
@@ -834,19 +836,81 @@ namespace BSFiberCore.Models.BL
             return html;
         }
 
+        private DataForDeformDiagram ValuesForDeformDiagram()
+        {
+            string typeDiagram = "Трехлинейная";
+            string typeMaterial = "Фибробетон";
+
+            // сжатие
+            double R_n = 0;
+            double e0 = 0;
+            double e2 = 0;
+            double E = 0;
+            // растяжение
+            double Rt_n = 0;
+            double Rt2_n = 0;
+            double Rt3_n = 0;
+            double Et = 0;
+            double et0 = 0;
+            double et2 = 0;
+            double et3 = 0;
+
+            if (typeMaterial == BSHelper.FiberConcrete)
+            {
+                // Характеристики по сжатию (такие же, как у бетона)
+                R_n = MatFiber.Rfbn;       // Rb_n 
+                E = MatFiber.Efb;           //Eb
+
+                // Характеристики по растяжению
+                Rt_n = MatFiber.Rfbtn;     // Rfbt_n
+                Rt2_n = MatFiber.Rfbt2n;    // Rfbt2_n
+                Rt3_n = MatFiber.Rfbt3n;    // Rfbt3_n
+                Et = E;                    // !!!   // Efbt
+
+                // значения забираются с другой формы
+                //e0 = 0;      // eb0
+                //e2 = 0;      // eb2                
+                //et2 = 0;    // efbt2
+                //et3 = 0;    // efbt3
+            }
+            else if (typeMaterial == BSHelper.Rebar)
+            {
+
+                // Характеристики по растяжению
+                Rt_n = Rebar.Rsn;         // 
+                Et = Rebar.Es;           //
+                // Характеристики по сжатию
+                R_n = Rebar.Rsc;
+                E = Et;
+            }
+            else
+            {
+                throw new Exception("Выбрано значение материала, выходящее за предел предопределенных значений.");
+            }
+
+            DataForDeformDiagram data = new DataForDeformDiagram();
+            data.typesDiagram = new string[] { typeMaterial, typeDiagram };
+            data.resists = new double[] { R_n, Rt_n, Rt2_n, Rt3_n };
+            data.elasticity = new double[] { E, Et };
+            return data;
+        }
+
+
+
         public void CreatePictureForHeaderReport(List<BSCalcResultNDM> calcResults)
         {
             List<string> pathToPictures = new List<string>();
             string pathToPicture = DiagramPlot(); 
-            //// Диаграмма деформирования
-            
-            //    // собрать данные
-            //    DataForDeformDiagram data = ValuesForDeformDiagram();
-            //    // определить vm
-            //    CalcDeformDiagram calculateDiagram = new CalcDeformDiagram(data.typesDiagram, data.resists, data.elasticity);
-            //    Chart deformDiagram = calculateDiagram.CreteChart();
-            //    pathToPicture = CalcDeformDiagram.SaveChart(deformDiagram);
-            pathToPictures.Add(pathToPicture);
+
+            //// Диаграмма деформирования            
+            //// собрать данные
+            //DataForDeformDiagram data = ValuesForDeformDiagram();
+            //// определить vm
+            //CalcDeformDiagram calculateDiagram = new CalcDeformDiagram(data.typesDiagram, data.resists, data.elasticity);
+            //Chart deformDiagram = calculateDiagram.CreateChart();
+
+            //pathToPicture = CalcDeformDiagram.SaveChart(deformDiagram);
+            //pathToPictures.Add(pathToPicture);
             
             calcResults[0].PictureForHeaderReport = pathToPictures;
         }
