@@ -1,15 +1,16 @@
-﻿using MathNet.Numerics.Integration;
+﻿using BSFiberCore.Models.BL.Lib;
+using MathNet.Numerics;
+using MathNet.Numerics.Integration;
 using Microsoft.SqlServer.Server;
 using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
-using BSFiberCore.Models.BL.Lib;
 
 namespace FiberCore.Models.BL.Diagram;
 
@@ -399,68 +400,70 @@ public class CalcDeformDiagram
     }
 
 
-
     /// <summary>
     /// Создать объект chart
     /// </summary>
     /// <param name="pathToSave"></param>
     /// <returns></returns>
-    public Chart CreateChart()
+    public ScottPlot.Plot CreateChart()
     {
-        Chart chart = Charting.Chart();
-        //Charting.ChartArea chartArea = new Charting.ChartArea();
-        //Charting.Title title = new Charting.Title();
 
-        //string numChart = "1";
-
-        //string CAName = $"ChartArea{numChart}";
-        //string cName = $"chart{numChart}";
-        //string sName = $"Series{numChart}";
-        //string tName = $"Title{numChart}";
-
+        // create a plot and fill it with sample data
+        ScottPlot.Plot chart = new();
+        double[] dataX = ScottPlot.Generate.Consecutive(100);
+        double[] dataY = ScottPlot.Generate.RandomWalk(100);
+        chart.Add.Scatter(dataX, dataY);
+                
+        string numChart = "1";
+        string CAName = $"ChartArea{numChart}";
+        string cName = $"chart{numChart}";
+        string sName = $"Series{numChart}";
+        string tName = $"Title{numChart}";
 
         //chartArea.Name = CAName;
-        //chart.Name = cName;
+        
         //chart.Text = cName;
         //title.Name = tName;
 
-        //string name2Save = "DeformDiagram";
+        string name2Save = "DeformDiagram";
 
         //chart.ChartAreas.Add(chartArea);        
-        //chart.Location = new Point(3, 3);
+        
         //chart.Size = new Size(700, 400);
-        //chart.TabIndex = 0;
+        
         //chart.Titles.Add(typeMaterial + ". Диаграмма " + typeDiagram + ".");
         //chart.Series.Add(sName);
-        //chart.Series[sName].BorderWidth = 4;
-        //chart.Series[sName].ChartType = Charting.SeriesChartType.Line;
 
-        //for (int i = 0; i < deformsArray.Length; i++)
-        //{
-        //    double tmpEpsilon = deformsArray[i];
-        //    double tmpResits = getResists(tmpEpsilon);
+        chart.DataBorder.Width = 4;
+        //chart. .ChartType = Charting.SeriesChartType.Line;
+
+        for (int i = 0; i < deformsArray.Length; i++)
+        {
+            double tmpEpsilon = deformsArray[i];
+            double tmpResits = getResists(tmpEpsilon);
+
+
         //    chart.Series[sName].Points.AddXY(tmpEpsilon, tmpResits);
-        //    if (tmpResits == 0)
-        //    { 
-        //        continue; 
-        //    }
-        //    string pointLableX = Math.Round(tmpEpsilon, 5).ToString();
-        //    string pointLableY = Math.Round(tmpResits, 2).ToString();
-        //    chart.Series[sName].Points[i].Label = $"ε={pointLableX}, σ={pointLableY}";
-        //}
+            if (tmpResits == 0) continue;
+            
+            string pointLableX = Math.Round(tmpEpsilon, 5).ToString();
+            string pointLableY = Math.Round(tmpResits, 2).ToString();
+            //    chart.Series[sName].Points[i].Label = $"ε={pointLableX}, σ={pointLableY}";
+        }
 
         //chart.Series[sName].Font = new Font("Microsoft Sans Serif", 9.5F, FontStyle.Bold, GraphicsUnit.Point, 204);
 
+        chart.HideGrid();
         //chart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
         //chart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
         //chart.ChartAreas[0].AxisX.Crossing = 0;
         //chart.ChartAreas[0].AxisY.Crossing = 0;
 
-        //Font axisFont = new Font("Microsoft Sans Serif", 12F,
-        //        FontStyle.Bold, GraphicsUnit.Point, 204);
-        //chart.ChartAreas[0].AxisX.Title = "ε";
+        //var defaultFont = Control.DefaultFont;
+        //var axisFont = new Font(defaultFont.FontFamily, 12F, FontStyle.Bold);
+        chart.XLabel("ε");
         //chart.ChartAreas[0].AxisX.TitleFont = axisFont;
-        //chart.ChartAreas[0].AxisY.Title = "σ, кг/см2";
+        chart.YLabel("σ, кг/см2");
         //chart.ChartAreas[0].AxisY.TitleFont = axisFont;
         //chart.Series[sName].Color = Color.Red;
 
@@ -472,7 +475,7 @@ public class CalcDeformDiagram
     /// <summary>
     /// Сохранить диаграмму
     /// </summary>
-    public static string SaveChart(Chart chart, string pictureName = null)
+    public static string SaveChart(ScottPlot.Plot chart, string pictureName = null)
     {
         if (pictureName == null)
         { 
@@ -483,9 +486,9 @@ public class CalcDeformDiagram
             pictureName = pictureName + ".png"; 
         }
 
-        chart.SaveImage(pictureName);
+        //chart.GetImageBytes() .SaveImage(pictureName);
 
-        return Directory.GetCurrentDirectory() + "\\" + pictureName;
+        return  "\\" + pictureName;
     }
 }
 

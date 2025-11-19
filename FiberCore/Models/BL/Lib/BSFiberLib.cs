@@ -29,6 +29,10 @@ namespace BSFiberCore.Models.BL.Lib
         /// </summary>
         public const int CG2 = 2;
 
+        public const string TypeOfDiagram = BSHelper.ThreeLineDiagram;
+
+        public const string TypeOfMaterial = BSHelper.FiberConcrete;
+
         public const string TitleTension = "Напряжения";
         public const string TitleRelativeDeformation = "Относительные деформации";
 

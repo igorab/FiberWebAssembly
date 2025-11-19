@@ -40,6 +40,9 @@ namespace BSFiberCore.Models.BL
         public List<Rebar>? m_Rebar {private  get; set; }
         public List<RebarDiameters>? m_RebarDiameters {private  get; set; }
 
+        public string typeDiagram { private get; set; } = BSFiberLib.TypeOfDiagram;
+        public string typeMaterial { private get; set; } = BSFiberLib.TypeOfMaterial;
+
         BSSectionChart SectionChart;
 
         // Mesh generation
@@ -819,16 +822,15 @@ namespace BSFiberCore.Models.BL
         /// диаграмма деформирования
         /// </summary>
         /// <returns></returns>
-        private string DiagramPlot()
+        private string DiagramPlot(DataForDeformDiagram data)
         {
-            // create a plot and fill it with sample data
-            ScottPlot.Plot myPlot = new();
-            double[] dataX = ScottPlot.Generate.Consecutive(100);
-            double[] dataY = ScottPlot.Generate.RandomWalk(100);
-            myPlot.Add.Scatter(dataX, dataY);
 
+            //// определить vm
+            CalcDeformDiagram calculateDiagram = new CalcDeformDiagram(data.typesDiagram, data.resists, data.elasticity);
+            ScottPlot.Plot myPlot = calculateDiagram.CreateChart();
+            
             // render the plot as a PNG and encode its bytes in HTML
-            byte[] imgBytes = myPlot.GetImageBytes(600, 400, ScottPlot.ImageFormat.Png);
+            byte[] imgBytes = myPlot.GetImageBytes(700, 400, ScottPlot.ImageFormat.Png);
             string b64 = Convert.ToBase64String(imgBytes);
             string png = $"<img src='data:image/png;base64,{b64}'>";
             string html = $"{png}";
@@ -837,10 +839,7 @@ namespace BSFiberCore.Models.BL
         }
 
         private DataForDeformDiagram ValuesForDeformDiagram()
-        {
-            string typeDiagram = "Трехлинейная";
-            string typeMaterial = "Фибробетон";
-
+        {           
             // сжатие
             double R_n = 0;
             double e0 = 0;
@@ -875,13 +874,12 @@ namespace BSFiberCore.Models.BL
             }
             else if (typeMaterial == BSHelper.Rebar)
             {
-
                 // Характеристики по растяжению
-                Rt_n = Rebar.Rsn;         // 
-                Et = Rebar.Es;           //
+                Rt_n = Rebar.Rsn;          
+                Et   = Rebar.Es;           
                 // Характеристики по сжатию
-                R_n = Rebar.Rsc;
-                E = Et;
+                R_n  = Rebar.Rsc;
+                E    = Et;
             }
             else
             {
@@ -896,22 +894,17 @@ namespace BSFiberCore.Models.BL
         }
 
 
-
+        // Диаграмма деформирования 
         public void CreatePictureForHeaderReport(List<BSCalcResultNDM> calcResults)
         {
             List<string> pathToPictures = new List<string>();
-            string pathToPicture = DiagramPlot(); 
-
-            //// Диаграмма деформирования            
-            //// собрать данные
-            //DataForDeformDiagram data = ValuesForDeformDiagram();
-            //// определить vm
-            //CalcDeformDiagram calculateDiagram = new CalcDeformDiagram(data.typesDiagram, data.resists, data.elasticity);
-            //Chart deformDiagram = calculateDiagram.CreateChart();
+                     
+            // собрать данные                       
+            string pathToPicture = DiagramPlot(ValuesForDeformDiagram());
 
             //pathToPicture = CalcDeformDiagram.SaveChart(deformDiagram);
-            //pathToPictures.Add(pathToPicture);
-            
+            pathToPictures.Add(pathToPicture);
+
             calcResults[0].PictureForHeaderReport = pathToPictures;
         }
 
