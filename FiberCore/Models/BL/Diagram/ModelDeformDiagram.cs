@@ -407,63 +407,48 @@ public class CalcDeformDiagram
     /// <returns></returns>
     public ScottPlot.Plot CreateChart()
     {
-
         // create a plot and fill it with sample data
         ScottPlot.Plot chart = new();
-        double[] dataX = ScottPlot.Generate.Consecutive(100);
-        double[] dataY = ScottPlot.Generate.RandomWalk(100);
-        chart.Add.Scatter(dataX, dataY);
-                
-        string numChart = "1";
-        string CAName = $"ChartArea{numChart}";
-        string cName = $"chart{numChart}";
-        string sName = $"Series{numChart}";
-        string tName = $"Title{numChart}";
+                               
+        chart.Title("Трехлинейная диаграмма деформирования");
+        chart.XLabel("ε");
+        //chart.ChartAreas[0].AxisX.TitleFont = axisFont;
+        chart.YLabel("σ, кг/см2");
 
-        //chartArea.Name = CAName;
-        
-        //chart.Text = cName;
-        //title.Name = tName;
-
-        string name2Save = "DeformDiagram";
-
-        //chart.ChartAreas.Add(chartArea);        
-        
-        //chart.Size = new Size(700, 400);
-        
+        //chart.ChartAreas.Add(chartArea);                
+        //chart.Size = new Size(700, 400);        
         //chart.Titles.Add(typeMaterial + ". Диаграмма " + typeDiagram + ".");
         //chart.Series.Add(sName);
+        chart.DataBorder.Width = 2;
+        chart.ShowAxesAndGrid();
 
-        chart.DataBorder.Width = 4;
-        //chart. .ChartType = Charting.SeriesChartType.Line;
-
+        var resists = new double[deformsArray.Length];   
         for (int i = 0; i < deformsArray.Length; i++)
         {
             double tmpEpsilon = deformsArray[i];
             double tmpResits = getResists(tmpEpsilon);
-
-
-        //    chart.Series[sName].Points.AddXY(tmpEpsilon, tmpResits);
+            resists[i] = tmpResits;
+            //chart.Add.Scatter(tmpEpsilon, tmpResits);
             if (tmpResits == 0) continue;
             
             string pointLableX = Math.Round(tmpEpsilon, 5).ToString();
             string pointLableY = Math.Round(tmpResits, 2).ToString();
-            //    chart.Series[sName].Points[i].Label = $"ε={pointLableX}, σ={pointLableY}";
+
+            chart.Add.Text( $"ε={pointLableX}, σ={pointLableY}", tmpEpsilon, tmpResits);
         }
+        
+        chart.Add.Scatter(deformsArray, resists);
 
         //chart.Series[sName].Font = new Font("Microsoft Sans Serif", 9.5F, FontStyle.Bold, GraphicsUnit.Point, 204);
 
-        chart.HideGrid();
+        //chart.HideGrid();
         //chart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
         //chart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
         //chart.ChartAreas[0].AxisX.Crossing = 0;
         //chart.ChartAreas[0].AxisY.Crossing = 0;
-
         //var defaultFont = Control.DefaultFont;
         //var axisFont = new Font(defaultFont.FontFamily, 12F, FontStyle.Bold);
-        chart.XLabel("ε");
-        //chart.ChartAreas[0].AxisX.TitleFont = axisFont;
-        chart.YLabel("σ, кг/см2");
+
         //chart.ChartAreas[0].AxisY.TitleFont = axisFont;
         //chart.Series[sName].Color = Color.Red;
 
