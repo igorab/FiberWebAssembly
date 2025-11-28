@@ -298,7 +298,7 @@ public class FiberCalculator
         }
         catch (Exception _e)
         {
-            MessageBox.Show(_e.Message);
+            MessageBox.Show(_e?.Message??"");
             return false;
         }            
     }
