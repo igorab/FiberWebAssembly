@@ -11,7 +11,9 @@
     <option value="5">Тавр нижняя полка</option>
 </select>
 
-<SkiaSharpCanvas OnPaintSurface="OnPaintSurface" style="width:100%;height:700px;" />
+
+
+<SKCanvasView OnPaintSurface="OnPaintSurface" style="width:100%;height:700px;" />
 
 @code {
 
@@ -47,8 +49,10 @@
 
     int displaySectionId = 4;
 
-    void OnSectionChanged(ChangeEventArgs e) {
-        if (int.TryParse(e?.Value?.ToString(), out var id)) displaySectionId = id;
+    void OnSectionChanged(ChangeEventArgs e) 
+    {
+        if (int.TryParse(e?.Value?.ToString(), out var id)) 
+            displaySectionId = id;
     }
 
     BeamSection GetSection(int id) => Array.Find(sections, s => s.Id == id);
